@@ -39,6 +39,7 @@ export LANGUAGE=en_US
 export FZF_TMUX_HEIGHT=75
 COMPLETION_WAITING_DOTS="true"
 ENABLE_CORRECTION="true"
+export MANPAGER="sh -c 'bat -l man -p'"
 
 export TERM=screen-256color #screen-256color xterm-256color
 

@@ -2,15 +2,13 @@
 # DOCKER ALIASES. Fancy way
 #
 
-alias dex="docker exec -i -t"
-
-dps() {
+function dps() {
     # Docker ps
     #
     docker ps -a --format "{{.Names}};({{.Image}});{{.Ports}}" | sort -r | column -t -s ";" -W 4 | fzf +s --preview-window hidden
 }
 
-dsh() {
+function dsh() {
     # Shell into docker container, start if not started
     #
     local cid
@@ -19,7 +17,7 @@ dsh() {
     [ -n "$cid" ] && docker start "$cid" && docker exec -it "$cid" sh
 }
 
-ds() {
+function ds() {
     # Stahp Docker container
     #
     local cid

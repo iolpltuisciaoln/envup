@@ -25,3 +25,4 @@ curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/powerline_tm
 curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/p10k.zsh --output ~/.p10k.zsh
 curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/aliases.docker.zsh --output ~/.aliases.docker.zsh
 curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/aliases.zsh --output ~/.aliases.zsh
+curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/zshenv --output ~/.zshenv

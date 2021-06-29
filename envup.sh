@@ -1,3 +1,7 @@
+#
+# RUN ME WITH THIS COMMAND:
+# sh -c "$(curl -fsSL https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/envup.sh)" "" --unattended
+#
 dnf -y install procps iputils zsh git fzf findutils tree mc fd-find ripgrep tmux bat autojump-zsh tmux-powerline htop bmon
 
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
@@ -21,5 +25,8 @@ usermod root -s /usr/bin/zsh
 mv /bin/more /bin/more.bak && ln -s /bin/bat /bin/more
 
 curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/rc.zsh --output ~/.zshrc
-curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/tmux.conf --output /etc/
+curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/tmux.conf --output /etc/tmux.conf
 curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/powerline_tmux.json --output /etc/xdg/powerline/themes/tmux/default.json
+curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/p10k.zsh --output ~/.p10k.zsh
+curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/aliases.docker.zsh --output ~/.aliases.docker.zsh
+curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/aliases.zsh --output ~/.aliases.zsh

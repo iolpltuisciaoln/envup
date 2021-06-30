@@ -45,14 +45,15 @@ export TERM=screen-256color #screen-256color xterm-256color
 
 export COLORTERM=truecolor
 #export FZF_DEFAULT_OPTS="--height 60% --reverse --border --preview 'head -100 {}'"
-export FZF_DEFAULT_OPTS="--height 75% --reverse --border --preview 'tree -C {} | head -200'"
+# export FZF_DEFAULT_OPTS="--height 75% --reverse --border --preview 'tree -C {} | head -200'"
+export FZF_DEFAULT_OPTS="--height 75% --reverse --border --preview-window hidden"
 #export FZF_DEFAULT_OPTS="--height 75% --reverse --border --preview 'tree -C {} | bat --style=numbers --color=always --line-range :500 {}'"
 #export FZF_DEFAULT_OPTS='--height 75% --ansi --border --preview "if file {} | grep -i 'text'; then head -100 {}; fi"'
 #export FZF_CTRL_T_OPTS="--preview '(highlight -O ansi -l {} 2> /dev/null || cat {} || tree -C {}) 2> /dev/null | head -200'"
 # export FZF_CTRL_T_OPTS="--preview '(highlight -O ansi -l {} 2> /dev/null || bat --style=numbers --color=always --line-range :500 {} || tree -C {}) 2> /dev/null | head -200'"
-export FZF_CTRL_T_OPTS="--preview 'fzf-my-preview {}'"
-export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:hidden:wrap --bind '?:toggle-preview'"
-export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -200'"
+export FZF_CTRL_T_OPTS="--preview 'fzf-my-preview {}' --preview-window nohidden"
+export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window 'down:4:wrap:nohidden'"
+export FZF_ALT_C_OPTS="--preview-window nohidden --preview 'tree -C {} | head -200'"
 export FZF_COMPLETION_TRIGGER='**' #!!
 
 

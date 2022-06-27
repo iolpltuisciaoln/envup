@@ -5,8 +5,12 @@
 function dps() {
     # Docker ps
     #
-    docker ps -a --format "{{.Names}};({{.Image}});{{.Ports}}" | sort -r | column -t -s ";" -W 4 | fzf +s --preview-window hidden
+    docker ps --format "{{.Names}};({{.Image}});{{.Ports}}" | sort -r | column -t -s ";" -W 4 | fzf +s --preview-window hidden
 }
+
+function dpsa() {
+    docker ps -a --format "{{.Names}};({{.Image}});{{.Ports}}"|sort -r|column -t -s ";" -W 4|fzf +s --preview-window hidden
+    }
 
 function dsh() {
     # Shell into docker container, start if not started

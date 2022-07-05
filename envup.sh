@@ -19,10 +19,12 @@ git clone --depth 1 https://github.com/Aloxaf/fzf-tab ${ZSH_CUSTOM:-~/.oh-my-zsh
 usermod root -s /usr/bin/zsh
 mv /bin/more /bin/more.bak && ln -s /bin/bat /bin/more
 
-curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/rc.zsh --output ~/.zshrc
+curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/zshrc --output /etc/zsh/zshrc
+curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/zshenv --output /etc/zsh/zshenv
+curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/aliases.docker.zsh --output /etc/zsh/.aliases.docker.zsh
+curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/aliases.zsh --output /etc/zsh/.aliases.zsh
 curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/tmux.conf --output /etc/tmux.conf
 curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/powerline_tmux.json --output /etc/xdg/powerline/themes/tmux/default.json
 curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/p10k.zsh --output ~/.p10k.zsh
-curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/aliases.docker.zsh --output ~/.aliases.docker.zsh
-curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/aliases.zsh --output ~/.aliases.zsh
-curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/zshenv --output ~/.zshenv
+
+

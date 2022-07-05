@@ -1,18 +1,17 @@
 {
-	"segments": {
-		"right": [
-			{
-		    	    "function": "powerlinemem.mem_usage.mem_usage_percent",
-		    	    "args": {
-			        }
-			},
-		        {
-				"function": "powerline.segments.common.sys.system_load",
-				"priority": 50
-			},
-			{
-				"function": "powerline.segments.common.net.network_load"
-			}
-		]
-	}
+    "segments": {
+        "right": [
+            {
+                "function": "powerlinemem.mem_usage.mem_usage_percent",
+                "args": {}
+            },
+            {
+                "function": "powerline.segments.common.sys.system_load",
+                "priority": 50
+            },
+            {
+                "function": "powerline.segments.common.net.network_load"
+            }
+        ]
+    }
 }

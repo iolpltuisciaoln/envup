@@ -1,6 +1,7 @@
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
+#zmodload zsh/zprof
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
@@ -8,7 +9,7 @@ fi
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
-export ZSH="/root/.oh-my-zsh"
+export ZSH=~/.oh-my-zsh
 
 ZSH_THEME="powerlevel10k/powerlevel10k"
 
@@ -34,7 +35,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 
 # ENV
 export DISPLAY=:0
-export LANG=en_GB.UTF-8
+export LANG=en_US.UTF-8
 export LANGUAGE=en_US
 export FZF_TMUX_HEIGHT=75
 COMPLETION_WAITING_DOTS="true"
@@ -51,7 +52,7 @@ export FZF_DEFAULT_OPTS="+s --height 75% --reverse --border --preview-window hid
 #export FZF_DEFAULT_OPTS='--height 75% --ansi --border --preview "if file {} | grep -i 'text'; then head -100 {}; fi"'
 #export FZF_CTRL_T_OPTS="--preview '(highlight -O ansi -l {} 2> /dev/null || cat {} || tree -C {}) 2> /dev/null | head -200'"
 # export FZF_CTRL_T_OPTS="--preview '(highlight -O ansi -l {} 2> /dev/null || bat --style=numbers --color=always --line-range :500 {} || tree -C {}) 2> /dev/null | head -200'"
-export FZF_CTRL_T_OPTS="+s --preview 'fzf-my-preview {}' --preview-window nohidden"
+export FZF_CTRL_T_OPTS="+s --preview 'fzf-preview {}' --preview-window nohidden"
 export FZF_CTRL_R_OPTS="+s --preview 'echo {}' --preview-window 'down:4:wrap:nohidden'"
 export FZF_ALT_C_OPTS="+s --preview-window nohidden --preview 'tree -C {} | head -200'"
 export FZF_COMPLETION_TRIGGER='**' #!!
@@ -79,8 +80,8 @@ zstyle ':fzf-tab:complete:cd:*' fzf-preview 'tree -C $realpath | head -200'
 plugins=(git zsh-autosuggestions zsh-syntax-highlighting fzf fzf-tab)
 source $ZSH/oh-my-zsh.sh
 
-[[ ! -f ~/.aliases.docker.zsh ]] || source ~/.aliases.docker.zsh
-[[ ! -f ~/.aliases.zsh ]] || source ~/.aliases.zsh
+[[ ! -f /etc/zsh/.aliases.docker.zsh ]] || source /etc/zsh/.aliases.docker.zsh
+[[ ! -f /etc/zsh/.aliases.zsh ]] || source /etc/zsh/.aliases.zsh
 
 accept-line() {
   if [[ -z $BUFFER ]]; then
@@ -97,7 +98,9 @@ zle -N accept-line
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-#    (tmux attach-session -t 0 && tmux source /usr/share/tmux/powerline.conf)|| tmux new -s 0
-if [ -z "$TMUX" ]; then
-    tmux attach-session -t 0 || tmux new -s 0
-fi
+#zprof
+# PATH="~/perl5/bin${PATH:+:${PATH}}"; export PATH;
+# PERL5LIB="~/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
+# PERL_LOCAL_LIB_ROOT="~/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
+# PERL_MB_OPT="--install_base \"~/perl5\""; export PERL_MB_OPT;
+# PERL_MM_OPT="INSTALL_BASE=~/perl5"; export PERL_MM_OPT;

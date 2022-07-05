@@ -96,7 +96,7 @@ zle -N accept-line
 
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+[[ ! -f /etc/zsh/.p10k.zsh ]] || source /etc/zsh/.p10k.zsh
 
 #zprof
 # PATH="~/perl5/bin${PATH:+:${PATH}}"; export PATH;

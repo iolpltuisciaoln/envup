@@ -5,9 +5,25 @@
 export TERM=xterm-256color #screen-256color
 export COLORTERM=truecolor
 
-dnf -y install procps iputils zsh git fzf findutils \
-    tree mc fd-find ripgrep tmux bat autojump-zsh \
-    tmux-powerline htop bmon exa
+YUM_CMD=$(which yum)
+APT_GET_CMD=$(which apt-get)
+DNF_CMD=$(which dnf)
+
+if [ ! -z $YUM_CMD ]; then
+    PKG=$YUM_CMD
+elif [ ! -z $APT_GET_CMD ]; then
+    PKG=$APT_GET_CMD
+else
+    echo "error can't detect package manager"
+    exit 1;
+fi
+
+INSTALL_PKGS="procps iputils zsh git fzf findutils tree mc fd-find ripgrep tmux bat autojump-zsh tmux-powerline htop bmon exa curl"
+
+for i in $INSTALL_PKGS; do
+    $PKG install -y $i
+done
+
 
 rm -Rf ~/.oh-my-zsh && sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
@@ -25,6 +41,6 @@ curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/aliases.dock
 curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/aliases.zsh --output /etc/zsh/.aliases.zsh
 curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/tmux.conf --output /etc/tmux.conf
 curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/powerline_tmux.json --output /etc/xdg/powerline/themes/tmux/default.json
-curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/p10k.zsh --output ~/.p10k.zsh
+curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/p10k.zsh --output /etc/zsh/.p10k.zsh
 
 

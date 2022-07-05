@@ -1,5 +1,5 @@
 alias ee='mcedit'
-alias mc='. /usr/libexec/mc/mc-wrapper.sh'
+# alias mc='. /usr/libexec/mc/mc-wrapper.sh'
 alias -g G='| grep -i'
 alias dni='dnf install'
 alias l='exa -Flahg --icons'

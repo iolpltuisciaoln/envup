@@ -13,7 +13,7 @@ function fzf-preview(){
             lsar $1
         ;;
         *)
-            (bat --style=numbers --color=always --line-range :500 $1|| tree -C $1) 2> /dev/null | head -200
+            (more --style=numbers --color=always --line-range :500 $1|| tree -C $1) 2> /dev/null | head -200
             ;;
         esac
     # bat --style=numbers --color=always --line-range :500 $1

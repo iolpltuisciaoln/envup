@@ -13,13 +13,15 @@ fzf-cd-widget () {
         local dir="$(eval "$cmd" | FZF_DEFAULT_OPTS="--height ${FZF_TMUX_HEIGHT:-40%} --reverse --bind=ctrl-z:ignore $FZF_DEFAULT_OPTS $FZF_ALT_C_OPTS" $(__fzfcmd) +m)" 
         if [[ -z "$dir" ]]
         then
-                zle redisplay
-                return 0
+            zle redisplay
+            return 0
         fi
         echo $dir|sed "s/^$(echo $BUFFER | cut -b4- | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')//g" 
         chdir "$dir"
         zle fzf-redraw-prompt
 }
+
+zle -N fzf-cd-widget
 
 function fzf-preview(){
 
@@ -39,22 +41,24 @@ function fzf-preview(){
     return
 }
 
+zle -N fzf-preview
+
 fzf-redraw-prompt() {
-  local precmd
-  for precmd in $precmd_functions; do
-    $precmd
-  done
-  zle reset-prompt
+    local precmd
+    for precmd in $precmd_functions; do
+        $precmd
+    done
+    zle reset-prompt
 }
 zle -N fzf-redraw-prompt
 
 accept-line() {
-  if [[ -z $BUFFER ]]; then
-    zle -I
-    l
-  else
-    zle ".$WIDGET"
-  fi
+    if [[ -z $BUFFER ]]; then
+        zle -I
+        l
+    else
+        zle ".$WIDGET"
+    fi
 }
 
 zle -N accept-line

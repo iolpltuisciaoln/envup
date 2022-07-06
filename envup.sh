@@ -54,5 +54,5 @@ curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/tmux.conf --
 curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/powerline_tmux.json --output /etc/xdg/powerline/themes/tmux/default.json
 curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/p10k.zsh --output /etc/zsh/.p10k.zsh
 curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/fzfzsh --output /etc/zsh/.fzf.zsh
-
+echo "">~/.zshrc
 

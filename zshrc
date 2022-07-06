@@ -12,98 +12,25 @@ fi
 export ZSH=~/.oh-my-zsh
 
 ZSH_THEME="powerlevel10k/powerlevel10k"
-
-# Uncomment the following line to use hyphen-insensitive completion.
-# Case-sensitive completion must be off. _ and - will be interchangeable.
-# HYPHEN_INSENSITIVE="true"
-
-# Uncomment the following line to disable bi-weekly auto-update checks.
-# DISABLE_AUTO_UPDATE="true"
-
-# Uncomment the following line if pasting URLs and other text is messed up.
-# DISABLE_MAGIC_FUNCTIONS="true"
-
-# Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
-
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-# HIST_STAMPS="mm/dd/yyyy"
-
-# ENV
-export DISPLAY=:0
-export LANG=en_US.UTF-8
-export LANGUAGE=en_US
-export FZF_TMUX_HEIGHT=75
-COMPLETION_WAITING_DOTS="true"
-ENABLE_CORRECTION="true"
-export MANPAGER="sh -c 'bat -l man -p'"
-
-export TERM=screen-256color #screen-256color xterm-256color
-
-export COLORTERM=truecolor
-#export FZF_DEFAULT_OPTS="--height 60% --reverse --border --preview 'head -100 {}'"
-# export FZF_DEFAULT_OPTS="--height 75% --reverse --border --preview 'tree -C {} | head -200'"
-export FZF_DEFAULT_OPTS="+s --height 75% --reverse --border --preview-window hidden --bind '?:toggle-preview'"
-#export FZF_DEFAULT_OPTS="--height 75% --reverse --border --preview 'tree -C {} | bat --style=numbers --color=always --line-range :500 {}'"
-#export FZF_DEFAULT_OPTS='--height 75% --ansi --border --preview "if file {} | grep -i 'text'; then head -100 {}; fi"'
-#export FZF_CTRL_T_OPTS="--preview '(highlight -O ansi -l {} 2> /dev/null || cat {} || tree -C {}) 2> /dev/null | head -200'"
-# export FZF_CTRL_T_OPTS="--preview '(highlight -O ansi -l {} 2> /dev/null || bat --style=numbers --color=always --line-range :500 {} || tree -C {}) 2> /dev/null | head -200'"
-export FZF_CTRL_T_OPTS="+s --preview 'fzf-preview {}' --preview-window nohidden"
-export FZF_CTRL_R_OPTS="+s --preview 'echo {}' --preview-window 'down:4:wrap:nohidden'"
-export FZF_ALT_C_OPTS="+s --preview-window nohidden --preview 'tree -C {} | head -200'"
-export FZF_COMPLETION_TRIGGER='**' #!!
-
-
-HISTSIZE=10000000
-SAVEHIST=10000000
-setopt INC_APPEND_HISTORY        # Write to the history file immediately, not when the shell exits.
-setopt SHARE_HISTORY             # Share history between all sessions.
-setopt HIST_IGNORE_ALL_DUPS
-setopt hist_ignore_dups
-
-#_fzf_compgen_dir() {
-#   #copy-paste from fzf-cd-widget
-#    command find -L "$1" -mindepth 1 \( -path '*/\\.*' -o -fstype 'sysfs' -o -fstype 'devfs' -o -#fstype 'devtmpfs' -o -fstype 'proc' \) -prune  -o -type d -print 2> /dev/null | cut -b3-
-#  }
-
-# source /usr/share/fzf/shell/completion.zsh
-# source /usr/share/fzf/shell/key-bindings.zsh
+plugins=(git zsh-autosuggestions zsh-syntax-highlighting fzf fzf-tab)
 
 zle     -N   fzf-file-widget
 bindkey '^F' fzf-file-widget
-zstyle ':fzf-tab:complete:cd:*' fzf-preview 'tree -C $realpath | head -200'
+zstyle ':fzf-tab:*' continuous-trigger '/'
+zstyle ':completion:*:kill:*' ignored-patterns '0'
+zstyle ':completion:*:*:*:*:processes' command 'ps -auxeww --no-headers'
+zstyle ':fzf-tab:complete:(kill|ps):argument-rest' extra-opts --preview=$extract';ps --pid=$in[(w)2] -ueww --no-headers' --preview-window=down:50:wrap
+zstyle ':fzf-tab:complete:systemctl-*:*' fzf-preview 'SYSTEMD_COLORS=1 systemctl status $word'
+zstyle ':fzf-tab:complete:cd:*' fzf-command fzf-cd-widget
+zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
 
-plugins=(git zsh-autosuggestions zsh-syntax-highlighting fzf fzf-tab)
+
 source $ZSH/oh-my-zsh.sh
 
 [[ ! -f /etc/zsh/.aliases.docker.zsh ]] || source /etc/zsh/.aliases.docker.zsh
 [[ ! -f /etc/zsh/.aliases.zsh ]] || source /etc/zsh/.aliases.zsh
 
-accept-line() {
-  if [[ -z $BUFFER ]]; then
-    zle -I
-    l
-  else
-    zle ".$WIDGET"
-  fi
-}
-
-zle -N accept-line
-
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f /etc/zsh/.p10k.zsh ]] || source /etc/zsh/.p10k.zsh
-[[ ! -f /etc/zsh/.p10k.zsh ]] || source /etc/zsh/.p10k.zsh
-[ -f /etc/zsh/.fzf.zsh ] && source /etc/zsg/.fzf.zsh
-
-
-#zprof
-# PATH="~/perl5/bin${PATH:+:${PATH}}"; export PATH;
-# PERL5LIB="~/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
-# PERL_LOCAL_LIB_ROOT="~/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
-# PERL_MB_OPT="--install_base \"~/perl5\""; export PERL_MB_OPT;
-# PERL_MM_OPT="INSTALL_BASE=~/perl5"; export PERL_MM_OPT;
+[ -f /etc/zsh/.fzf.zsh ] && source /etc/zsh/.fzf.zsh

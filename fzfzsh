@@ -5,3 +5,56 @@
 # Key bindings
 # ------------
 source "/usr/share/doc/fzf/examples/key-bindings.zsh"
+
+fzf-cd-widget () {
+        #overwrite cd-widget from ... fzf/shell/key-bindings.zsh
+        local cmd="${FZF_ALT_C_COMMAND:-"command find -L $BUFFER -mindepth 1 \\( -path '*/\\.*' -o -fstype 'sysfs' -o -fstype 'devfs' -o -fstype 'devtmpfs' -o -fstype 'proc' \\) -prune -o -type d -print 2> /dev/null | cut -b1-"}" 
+        setopt localoptions pipefail no_aliases 2> /dev/null
+        local dir="$(eval "$cmd" | FZF_DEFAULT_OPTS="--height ${FZF_TMUX_HEIGHT:-40%} --reverse --bind=ctrl-z:ignore $FZF_DEFAULT_OPTS $FZF_ALT_C_OPTS" $(__fzfcmd) +m)" 
+        if [[ -z "$dir" ]]
+        then
+                zle redisplay
+                return 0
+        fi
+        echo $dir|sed "s/^$(echo $BUFFER | cut -b4- | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')//g" 
+        chdir "$dir"
+        zle fzf-redraw-prompt
+}
+
+function fzf-preview(){
+
+    ext=$1:t:e
+    if [ -d $1 ] && tree $1 && return
+    case "$ext" in
+        pdf|Pdf|PDF)
+            pdftotext -nodiag -nopgbrk $1 - | bat --style=numbers --color=always --line-range :500
+            ;;
+        rar|Rar|RAR)
+            lsar $1
+        ;;
+        *)
+            (more --style=numbers --color=always --line-range :500 $1|| tree -C $1) 2> /dev/null | head -200
+            ;;
+        esac
+    return
+}
+
+fzf-redraw-prompt() {
+  local precmd
+  for precmd in $precmd_functions; do
+    $precmd
+  done
+  zle reset-prompt
+}
+zle -N fzf-redraw-prompt
+
+accept-line() {
+  if [[ -z $BUFFER ]]; then
+    zle -I
+    l
+  else
+    zle ".$WIDGET"
+  fi
+}
+
+zle -N accept-line

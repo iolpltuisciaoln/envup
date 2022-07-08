@@ -12,7 +12,7 @@ fi
 export ZSH=~/.oh-my-zsh
 
 ZSH_THEME="powerlevel10k/powerlevel10k"
-plugins=(git zsh-autosuggestions zsh-syntax-highlighting fzf fzf-tab)
+plugins=(z git zsh-autosuggestions zsh-syntax-highlighting fzf fzf-tab)
 
 zle     -N   fzf-file-widget
 bindkey '^F' fzf-file-widget

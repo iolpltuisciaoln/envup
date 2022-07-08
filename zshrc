@@ -16,12 +16,15 @@ plugins=(z git zsh-autosuggestions zsh-syntax-highlighting fzf fzf-tab)
 
 zle     -N   fzf-file-widget
 bindkey '^F' fzf-file-widget
+bindkey  "^[[1~"   beginning-of-line
+bindkey  "^[[4~"   end-of-line
+
 zstyle ':fzf-tab:*' continuous-trigger '/'
 zstyle ':completion:*:kill:*' ignored-patterns '0'
 zstyle ':completion:*:*:*:*:processes' command 'ps -auxeww --no-headers'
 zstyle ':fzf-tab:complete:(kill|ps):argument-rest' extra-opts --preview=$extract';ps --pid=$in[(w)2] -ueww --no-headers' --preview-window=down:50:wrap
-zstyle ':fzf-tab:complete:systemctl-*:*' fzf-preview 'SYSTEMD_COLORS=1 systemctl status $word'
-zstyle ':fzf-tab:complete:cd:*' fzf-command fzf-cd-widget
+zstyle ':fzf-tab:complete:systemctl-*:*' fzf-custom-preview 'SYSTEMD_COLORS=1 systemctl status $word'
+zstyle ':fzf-tab:complete:cd:*' fzf-command fzf-cd-custom-widget
 zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
 
 source $ZSH/oh-my-zsh.sh

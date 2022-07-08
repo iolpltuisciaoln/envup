@@ -18,7 +18,7 @@ function dsh() {
     local cid
     cid=$(docker ps -a --format "{{.Names}};({{.Image}});{{.Ports}}" | sort | column -t -s ";" -W 4 | fzf +s --preview-window hidden)
     cid=$(echo $cid | awk '{print $1}')
-    [ -n "$cid" ] && docker start "$cid" && docker exec -it "$cid" sh
+    [ -n "$cid" ] && docker start "$cid" && docker exec -it "$cid" su
 }
 
 function ds() {

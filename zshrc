@@ -24,13 +24,10 @@ zstyle ':fzf-tab:complete:systemctl-*:*' fzf-preview 'SYSTEMD_COLORS=1 systemctl
 zstyle ':fzf-tab:complete:cd:*' fzf-command fzf-cd-widget
 zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
 
-
 source $ZSH/oh-my-zsh.sh
 
 [[ ! -f /etc/zsh/.aliases.docker.zsh ]] || source /etc/zsh/.aliases.docker.zsh
 [[ ! -f /etc/zsh/.aliases.zsh ]] || source /etc/zsh/.aliases.zsh
 
-
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f /etc/zsh/.p10k.zsh ]] || source /etc/zsh/.p10k.zsh
-[ -f /etc/zsh/.fzf.zsh ] && source /etc/zsh/.fzf.zsh

@@ -1,3 +1,7 @@
+#! PRELOAD FUNCTIONS FIST !#
+[ -f /etc/zsh/.fzf.zsh ] && source /etc/zsh/.fzf.zsh
+#!
+
 # ENV
 export DISPLAY=:0
 export LANG=en_US.UTF-8
@@ -11,7 +15,7 @@ export COLORTERM=truecolor
 export FZF_DEFAULT_OPTS="+s --reverse --border --preview-window hidden --bind '?:toggle-preview'"
 export FZF_CTRL_T_OPTS="+s --preview 'fzf-preview {}' --preview-window nohidden"
 export FZF_CTRL_R_OPTS="+s --preview 'echo {}' --preview-window 'down:4:wrap:nohidden'"
-export FZF_ALT_C_OPTS="+s --preview-window nohidden --preview 'tree -C {} | head -200'"
+export FZF_ALT_C_OPTS="+s --preview-window nohidden --preview 'tree --charset=utf-8 -C {} | head -200'"
 export FZF_COMPLETION_TRIGGER='**' #!!
 
 # Uncomment the following line to use hyphen-insensitive completion.

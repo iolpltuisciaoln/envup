@@ -8,13 +8,12 @@
 export DISPLAY=:0
 export LANG=en_US.UTF-8
 export LANGUAGE=en_US
-export FZF_TMUX_HEIGHT=75
 COMPLETION_WAITING_DOTS="true"
 ENABLE_CORRECTION="true"
 export MANPAGER="sh -c 'bat -l man -p'"
 export TERM=screen-256color #screen-256color xterm-256color
 export COLORTERM=truecolor
-export FZF_DEFAULT_OPTS="+s --reverse --border --preview-window hidden --bind '?:toggle-preview'"
+export FZF_DEFAULT_OPTS="+s --reverse --border --preview-window nohidden --bind '?:toggle-preview'"
 export FZF_CTRL_T_OPTS="+s --preview 'fzf-custom-preview {}' --preview-window nohidden"
 export FZF_CTRL_R_OPTS="+s --preview 'echo {}' --preview-window 'down:4:wrap:nohidden'"
 export FZF_ALT_C_OPTS="+s --preview-window nohidden --preview 'tree --charset=utf-8 -C {} | head -200'"

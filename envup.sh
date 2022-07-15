@@ -24,7 +24,6 @@ for i in $INSTALL_PKGS; do
     $PKG install -y $i
 done
 
-
 rm -Rf ~/.oh-my-zsh && sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
 git clone --depth 1 https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
@@ -47,11 +46,11 @@ elif [ ! -z /usr/bin/bat ]; then
 fi
 
 curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/zshrc --output /etc/zsh/zshrc
+curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/tmux_network_bw.sh --output /etc/zsh/tmux_network_bw.sh
 curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/zshenv --output /etc/zsh/zshenv
 curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/aliases.docker.zsh --output /etc/zsh/.aliases.docker.zsh
 curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/aliases.zsh --output /etc/zsh/.aliases.zsh
 curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/tmux.conf --output /etc/tmux.conf
-curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/powerline_tmux.json --output /etc/xdg/powerline/themes/tmux/default.json
 curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/p10k.zsh --output /etc/zsh/.p10k.zsh
 curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/fzfzsh --output /etc/zsh/.fzf.zsh
 echo "">~/.zshrc

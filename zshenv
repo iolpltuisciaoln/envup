@@ -20,6 +20,9 @@ export FZF_CTRL_R_OPTS="+s --preview 'echo {}' --preview-window 'down:4:wrap:noh
 export FZF_ALT_C_OPTS="+s --preview-window nohidden --preview 'tree --charset=utf-8 -C {} | head -200'"
 export FZF_COMPLETION_TRIGGER='**' #!!
 
+# https://the.exa.website/docs/colour-themes
+export EXA_COLORS="sn=32;0:sb=32;0:uu=33;40:gu=33;40:in=0;38:lc=0;38:ur=0;33:uw=0;33:ux=0;33:ue=0;33:gr=0;37:gw=0;37:gx=0;37:tr=0;31:tw=0;31:tx=0;31:da=0;34:uu=0;33:gu=0;37"
+
 # Uncomment the following line to use hyphen-insensitive completion.
 # Case-sensitive completion must be off. _ and - will be interchangeable.
 # HYPHEN_INSENSITIVE="true"

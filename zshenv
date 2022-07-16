@@ -13,7 +13,7 @@ ENABLE_CORRECTION="true"
 export MANPAGER="sh -c 'bat -l man -p'"
 export TERM=screen-256color #screen-256color xterm-256color
 export COLORTERM=truecolor
-export FZF_DEFAULT_OPTS="+s --reverse --border --preview-window nohidden --bind '?:toggle-preview'"
+export FZF_DEFAULT_OPTS="+s --height 100% --reverse --border --preview-window nohidden --bind '?:toggle-preview'"
 export FZF_CTRL_T_OPTS="+s --preview 'fzf-custom-preview {}' --preview-window nohidden"
 export FZF_CTRL_R_OPTS="+s --preview 'echo {}' --preview-window 'down:4:wrap:nohidden'"
 export FZF_ALT_C_OPTS="+s --preview-window nohidden --preview 'tree --charset=utf-8 -C {} | head -200'"

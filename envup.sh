@@ -46,13 +46,12 @@ elif [ ! -z /usr/bin/bat ]; then
     mv /bin/more /bin/more.bak && ln -s /bin/bat /bin/more
 fi
 
-curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/zshrc --output /etc/zsh/zshrc
+curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/zshrc --output /etc/zshrc
+curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/zshenv --output /etc/zshenv
 curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/tmux_network_bw.sh --output /etc/zsh/tmux_network_bw.sh
-curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/zshenv --output /etc/zsh/zshenv
 curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/aliases.docker.zsh --output /etc/zsh/.aliases.docker.zsh
 curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/aliases.zsh --output /etc/zsh/.aliases.zsh
 curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/tmux.conf --output /etc/tmux.conf
 curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/p10k.zsh --output /etc/zsh/.p10k.zsh
 curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/fzfzsh --output /etc/zsh/.fzf.zsh
 echo "">~/.zshrc
-

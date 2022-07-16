@@ -1,4 +1,5 @@
 #! PRELOAD FUNCTIONS FIST !#
+[[ ! -f /etc/zsh/.aliases.zsh ]] || source /etc/zsh/.aliases.zsh
 [ -f /etc/zsh/.fzf.zsh ] && source /etc/zsh/.fzf.zsh
 #!
 

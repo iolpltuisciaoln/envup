@@ -31,8 +31,8 @@ git clone --depth 1 https://github.com/zsh-users/zsh-syntax-highlighting.git ${Z
 
 git clone --depth 1 https://github.com/junegunn/fzf.git /tmp/fzf
 /tmp/fzf/install
-mkdir -p /usr/share/fzf/shell/
-cp /tmp/fzf/shell/* /usr/share/fzf/shell/ # key-bindings.zsh completion.zsh
+mkdir -p /etc/profile.d/
+cp /tmp/fzf/shell/* /etc/profile.d/ # key-bindings.zsh completion.zsh
 rm -Rf /tmp/fzf
 
 git clone --depth 1 https://github.com/Aloxaf/fzf-tab ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/fzf-tab

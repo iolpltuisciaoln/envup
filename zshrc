@@ -13,6 +13,8 @@ export ZSH=~/.oh-my-zsh
 ZSH_THEME="powerlevel10k/powerlevel10k"
 plugins=(z git zsh-autosuggestions zsh-syntax-highlighting fzf fzf-tab)
 source $ZSH/oh-my-zsh.sh
+source /etc/profile.d/completion.zsh
+source /etc/profile.d/key-bindings.zsh
 #!####################################!#
 
 zle     -N   fzf-file-widget

@@ -65,15 +65,13 @@ function dip {
 }
 
 function dl-fn {
-    docker logs $1
-}
-
-function dlf-fn {
-    docker logs -f $1
+    local cid
+    cid=$(docker ps -a --format "{{.Names}};({{.Image}});{{.Ports}}" | sort | column -t -s ";" -W 4 | fzf +s --preview-window hidden)
+    cid=$(echo $cid | awk '{print $1}')
+    [ -n "$cid" ] && docker logs -f "$cid"
 }
 
 alias dl=dl-fn
-alias dlf='dlf-fn'
 alias dcu="docker-compose up"
 alias dcud="docker-compose up -d"
 alias dcd="docker-compose down"

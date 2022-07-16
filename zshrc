@@ -17,6 +17,9 @@ source /etc/profile.d/completion.zsh
 source /etc/profile.d/key-bindings.zsh
 #!####################################!#
 
+[[ ! -f /etc/zsh/.aliases.docker.zsh ]] || source /etc/zsh/.aliases.docker.zsh
+[[ ! -f /etc/zsh/.aliases.zsh ]] || source /etc/zsh/.aliases.zsh
+
 zle     -N   fzf-file-widget
 bindkey '^F' fzf-file-widget
 bindkey  "^[[1~"   beginning-of-line

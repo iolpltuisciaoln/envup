@@ -54,6 +54,6 @@ curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/aliases.zsh 
 curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/tmux.conf --output /etc/tmux.conf
 curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/p10k.zsh --output /etc/zsh/.p10k.zsh
 curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/fzfzsh --output /etc/zsh/.fzf.zsh
-ln -s /etc/zsh/zshrc /etc/zshrc
-ln -s /etc/zsh/zshenv /etc/zshenv
+ln -fs /etc/zsh/zshrc /etc/zshrc
+ln -fs /etc/zsh/zshenv /etc/zshenv
 echo "">~/.zshrc

@@ -9,10 +9,19 @@ function dps() {
 }
 
 function dpsa() {
-    docker ps -a --format "{{.Names}};({{.Image}});{{.Ports}}"|sort -r|column -t -s ";" |fzf +s --preview-window hidden |fzf +s
+    docker ps -a --format "{{.Names}};({{.Image}});{{.Ports}}"|sort -r|column -t -s ";" |fzf +s --preview-window hidden
     }
 
 function dsu() {
+    # Shell into docker container
+    #
+    local cid
+    cid=$(docker ps --format "{{.Names}};({{.Image}});{{.Ports}}" | sort | column -t -s ";" | fzf +s --preview-window hidden)
+    cid=$(echo $cid | awk '{print $1}')
+    [ -n "$cid" ] && docker start "$cid" && docker exec -it "$cid" su
+}
+
+function dsua() {
     # Shell into docker container, start if not started
     #
     local cid

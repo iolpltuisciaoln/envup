@@ -13,12 +13,11 @@ export ZSH=~/.oh-my-zsh
 ZSH_THEME="powerlevel10k/powerlevel10k"
 plugins=(z git zsh-autosuggestions zsh-syntax-highlighting fzf fzf-tab)
 source $ZSH/oh-my-zsh.sh
-source /etc/profile.d/completion.zsh
-source /etc/profile.d/key-bindings.zsh
+# source /etc/profile.d/completion.zsh
+# source /etc/profile.d/key-bindings.zsh
 #!####################################!#
-
-[[ ! -f /etc/zsh/.aliases.docker.zsh ]] || source /etc/zsh/.aliases.docker.zsh
-[[ ! -f /etc/zsh/.aliases.zsh ]] || source /etc/zsh/.aliases.zsh
+[[ ! -f ~/.aliases.docker.zsh ]] || source ~/.aliases.docker.zsh
+[[ ! -f ~/.aliases.zsh ]] || source ~/.aliases.zsh
 
 zle     -N   fzf-file-widget
 bindkey '^F' fzf-file-widget
@@ -37,4 +36,4 @@ zstyle ':fzf-tab:complete:cd:*' fzf-command fzf-cd-custom-widget
 zstyle ':fzf-tab:complete:(-command-|-parameter-|-brace-parameter-|export|unset|expand):*' fzf-preview 'echo ${(P)word}'
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f /etc/zsh/.p10k.zsh ]] || source /etc/zsh/.p10k.zsh
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

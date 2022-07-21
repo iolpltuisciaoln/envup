@@ -18,7 +18,7 @@ else
     exit 1;
 fi
 
-INSTALL_PKGS="procps iputils zsh git fzf findutils tree mc fd-find ripgrep tmux bat autojump-zsh tmux-powerline htop bmon exa curl"
+INSTALL_PKGS="zsh git fzf findutils tree fd-find ripgrep tmux bat autojump-zsh exa"
 
 for i in $INSTALL_PKGS; do
     $PKG install -y $i

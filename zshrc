@@ -24,6 +24,9 @@ bindkey '^F' fzf-file-widget
 bindkey  "^[[1~"   beginning-of-line
 bindkey  "^[[4~"   end-of-line
 
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path "$XDG_CACHE_HOME/zsh/.zcompcache"
+
 zstyle ':fzf-tab:*' continuous-trigger '/'
 zstyle ':completion:*:(kill|ps):*' ignored-patterns '0'
 zstyle ':completion:*:*:*:*:processes' command 'ps -auxfww --no-headers'

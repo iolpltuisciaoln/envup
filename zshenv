@@ -12,7 +12,45 @@ ENABLE_CORRECTION="true"
 export MANPAGER="sh -c 'bat -l man -p'"
 export TERM=screen-256color #screen-256color xterm-256color
 export COLORTERM=truecolor
-export FZF_DEFAULT_OPTS="+s --height 100% --reverse --border --preview-window nohidden --bind '?:toggle-preview'"
+export FZF_HEADER_DEFAULT="info here.........."
+export FZF_DEFAULT_OPTS="+s
+--no-cycle
+--multi
+--height 100%
+--reverse
+--border
+--preview-window nohidden
+--bind '?:toggle-preview'
+"
+
+
+# export FZF_DEFAULT_OPTS="
+# --history=$HOME/.fzf_history
+# --layout=reverse
+# --info=inline
+# --height=80%
+# --multi
+# --border
+# --color=fg:#c0caf5,bg:#1a1b26,hl:#bb9af7
+# --color=fg+:#c0caf5,bg+:#292e42,hl+:#7dcfff
+# --color=info:#7aa2f7,prompt:#7dcfff,pointer:#7dcfff
+# --color=marker:#9ece6a,spinner:#9ece6a,header:#9ece6a
+# --color=gutter:#1a1b26
+# --prompt='> ' --pointer='▶' --marker='✓'
+# --header '$FZF_HEADER_DEFAULT'
+# --bind 'ctrl-s:select-all'
+# --bind 'alt-d:deselect-all'
+# --preview-window cycle
+# --bind '\:toggle-preview'
+# --bind 'ctrl-u:preview-half-page-up'
+# --bind 'ctrl-d:preview-half-page-down'
+# --bind 'alt-k:page-up'
+# --bind 'alt-j:page-down'
+# --bind 'ctrl-v:execute(nvim {} < /dev/tty > /dev/tty 2>&1)+accept'
+# "
+
+
+
 export FZF_CTRL_T_OPTS="+s --preview 'fzf-custom-preview {}' --preview-window nohidden"
 export FZF_CTRL_R_OPTS="+s --preview 'echo {}' --preview-window 'down:4:wrap:nohidden'"
 export FZF_ALT_C_OPTS="+s --preview-window nohidden --preview 'tree --charset=utf-8 -C {} | head -200'"

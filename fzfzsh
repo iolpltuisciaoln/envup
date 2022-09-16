@@ -1,21 +1,3 @@
-fzf-cd-custom-widget () {
-        #overwrite cd-widget from ... fzf/shell/key-bindings.zsh
-        local Pth=$(echo $BUFFER|cut -b4-)
-        local cmd="${FZF_ALT_C_COMMAND:-"command find -L $Pth -mindepth 1 \\( -path '*/\\.*' -o -fstype 'sysfs' -o -fstype 'devfs' -o -fstype 'devtmpfs' -o -fstype 'proc' \\) -prune -o -type d -print 2> /dev/null | cut -b1-"}"
-        setopt localoptions pipefail no_aliases 2> /dev/null
-        local dir="$(eval "$cmd" | FZF_DEFAULT_OPTS="--height ${FZF_TMUX_HEIGHT:-40%} --reverse --bind=ctrl-z:ignore $FZF_DEFAULT_OPTS $FZF_ALT_C_OPTS" $(__fzfcmd) +m)"
-        if [[ -z "$dir" ]]
-        then
-            zle redisplay
-            return 0
-        fi
-        echo $dir|sed "s/^$(echo $Pth | sed -e 's/\\/\\\\/g; s/\//\\\//g; s/&/\\\&/g')//g"
-        chdir "$dir"
-        zle fzf-redraw-prompt
-}
-
-zle -N fzf-cd-custom-widget
-
 fzf-custom-preview () {
     ext=$1:t:e
     if [ -d $1 ] && tree --charset=utf-8 -C $1 && return

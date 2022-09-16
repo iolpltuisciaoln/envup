@@ -27,14 +27,16 @@ bindkey  "^[[4~"   end-of-line
 zstyle ':completion:*' use-cache on
 zstyle ':completion:*' cache-path "$XDG_CACHE_HOME/zsh/.zcompcache"
 
+zstyle ':fzf-tab:*' fzf-flags --height=100%
 zstyle ':fzf-tab:*' continuous-trigger '/'
 zstyle ':completion:*:(kill|ps):*' ignored-patterns '0'
 zstyle ':completion:*:*:*:*:processes' command 'ps -auxfww --no-headers'
 zstyle ':fzf-tab:complete:(kill|ps):argument-rest' fzf-preview 'ps --pid=$word -o cmd -f --no-headers -w -w'
 zstyle ':fzf-tab:complete:(kill|ps):argument-rest' fzf-flags --preview-window=down:3:wrap 
 
-zstyle ':fzf-tab:complete:systemctl-*:*' fzf-custom-preview 'SYSTEMD_COLORS=1 systemctl status $word'
-zstyle ':fzf-tab:complete:cd:*' fzf-command fzf-cd-custom-widget
+zstyle ':fzf-tab:complete:systemctl-*:*' fzf-preview 'SYSTEMD_COLORS=1 systemctl status $word'
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa -1 --color=always $realpath'
+zstyle ':fzf-tab:complete:cd:*' fzf-flags --height=100%
 
 zstyle ':fzf-tab:complete:(-command-|-parameter-|-brace-parameter-|export|unset|expand):*' fzf-preview 'echo ${(P)word}'
 

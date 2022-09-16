@@ -18,11 +18,14 @@ export FZF_DEFAULT_OPTS="+s
 --multi
 --height 100%
 --reverse
+--layout=reverse
 --border
 --preview-window nohidden
+--bind 'ctrl-a:select-all'
+--bind 'alt-d:deselect-all'
 --bind '?:toggle-preview'
+--border
 "
-
 
 # export FZF_DEFAULT_OPTS="
 # --history=$HOME/.fzf_history

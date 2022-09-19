@@ -1,6 +1,6 @@
 fzf-custom-preview () {
     ext=$1:t:e
-    if [ -d $1 ] && tree --charset=utf-8 -C $1 && return
+    if [ -d $1 ] && exa --all --classify --color=always -T $1 && return
     case "$ext" in
         pdf|Pdf|PDF)
             pdftotext -nodiag -nopgbrk $1 - | bat --style=numbers --color=always --line-range :500

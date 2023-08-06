@@ -9,7 +9,7 @@ function dps() {
 }
 
 function dpsa() {
-    docker ps -a --format "{{.Names}};({{.Image}});{{.Ports}}"|sort -r|column -t -s ";" |fzf +s --preview-window hidden
+    docker ps -a --format "{{.Names}};({{.Image}});{{.Status}};{{.Ports}}"|sort -r|column -t -s ";" |fzf +s --preview-window hidden
     }
 
 function dsu() {

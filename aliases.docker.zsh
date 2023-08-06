@@ -5,7 +5,7 @@
 function dps() {
     # Docker ps
     #
-    docker ps --format "{{.Names}};({{.Image}});{{.Ports}}" | sort -r | column -t -s ";" | fzf +s --preview-window hidden
+    docker ps --format "{{.Names}};({{.Image}});{{.Status}};{{.Ports}}" | sort -r | column -t -s ";" | fzf +s --preview-window hidden
 }
 
 function dpsa() {

@@ -9,7 +9,7 @@ YUM_CMD=$(which yum)
 APT_GET_CMD=$(which apt-get)
 DNF_CMD=$(which dnf)
 
-if [ ! -z $YUM_CMD ]; then
+if [ ! -z $DNF_CMD ]; then
     PKG=$DNF_CMD
 elif [ ! -z $YUM_CMD ]; then
     PKG=$YUM_CMD

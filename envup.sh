@@ -38,8 +38,8 @@ git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 git clone --depth 1 https://github.com/Aloxaf/fzf-tab ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/fzf-tab
 
 
-more = `which more`
-batcat = `which bat`
+more=`which more`
+batcat=`which bat`
 
 if [ -f $batcat ]; then
     mv $more ${more}.bak

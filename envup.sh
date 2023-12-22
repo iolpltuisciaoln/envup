@@ -35,11 +35,14 @@ git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 
 git clone --depth 1 https://github.com/Aloxaf/fzf-tab ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/fzf-tab
 
-if [ ! -z /usr/bin/batcat ]; then
-    mv /bin/more /bin/more.bak && ln -s /usr/bin/batcat /bin/more
-elif [ ! -z /usr/bin/bat ]; then
-    mv /bin/more /bin/more.bak && ln -s /usr/bin/bat /bin/more
-fi
+
+more = `which more`
+batcat = `which bat`
+
+if [ -f $batcat ]; then
+    mv $more ${more}.bak
+    ln -s $batcat $more
+
 
 curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/zshrc >~/.zshrc
 curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/zshenv >~/.zshenv

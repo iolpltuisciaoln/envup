@@ -56,5 +56,5 @@ curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/tmux.conf >~
 curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/p10k.zsh >~/.p10k.zsh
 curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/fzfzsh >~/.fzf.zsh
 
-
+sudo usermod -s `which zsh` $USER
 #fira-code-fonts.noarch

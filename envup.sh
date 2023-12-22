@@ -10,6 +10,8 @@ APT_GET_CMD=$(which apt-get)
 DNF_CMD=$(which dnf)
 
 if [ ! -z $YUM_CMD ]; then
+    PKG=$DNF_CMD
+elif [ ! -z $YUM_CMD ]; then
     PKG=$YUM_CMD
 elif [ ! -z $APT_GET_CMD ]; then
     PKG=$APT_GET_CMD
@@ -21,7 +23,7 @@ fi
 INSTALL_PKGS="zsh git fzf findutils tree fd-find ripgrep tmux tmux-powerline bat autojump-zsh eza"
 
 for i in $INSTALL_PKGS; do
-    $PKG install -y $i
+    sudo $PKG install -y $i
 done
 
 rm -Rf ~/.oh-my-zsh && sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended

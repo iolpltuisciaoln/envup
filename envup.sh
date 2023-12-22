@@ -42,13 +42,14 @@ more=`which more`
 batcat=`which bat`
 
 if [ -f $batcat ]; then
-    mv $more ${more}.bak
-    ln -s $batcat $more
+    sudo mv $more ${more}.bak
+    sudo ln -s $batcat $more
 
 
 curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/zshrc >~/.zshrc
 curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/zshenv >~/.zshenv
 curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/tmux_network_bw.sh >~/.tmux_network_bw.sh
+chmod +x ~/.tmux_network_bw.sh
 curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/aliases.docker.zsh >~/.aliases.docker.zsh
 curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/aliases.zsh >~/.aliases.zsh
 curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/tmux.conf >~/.tmux.conf

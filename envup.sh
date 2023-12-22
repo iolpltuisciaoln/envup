@@ -37,14 +37,13 @@ git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 
 git clone --depth 1 https://github.com/Aloxaf/fzf-tab ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/fzf-tab
 
-
-more=`which more`
-batcat=`which bat`
+more=$(which more)
+batcat=$(which bat)
 
 if [ -f $batcat ]; then
     sudo mv $more ${more}.bak
     sudo ln -s $batcat $more
-
+fi
 
 curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/zshrc >~/.zshrc
 curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/zshenv >~/.zshenv
@@ -56,5 +55,17 @@ curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/tmux.conf >~
 curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/p10k.zsh >~/.p10k.zsh
 curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/fzfzsh >~/.fzf.zsh
 
-sudo usermod -s `which zsh` $USER
-#fira-code-fonts.noarch
+sudo usermod -s $(which zsh) $USER
+
+sudo mkdir -p /usr/local/share/fonts/JetBrainsMono
+sudo mkdir -p /usr/local/share/fonts/FiraMono
+sudo mkdir -p /usr/local/share/fonts/DroidSansMono
+
+sudo curl -s -L https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.tar.xz | tar xvJ -C /usr/local/share/fonts/JetBrainsMono/
+sudo curl -s -L https://github.com/ryanoasis/nerd-fonts/releases/latest/download/FiraMono.tar.xz | tar xvJ -C /usr/local/share/fonts/FiraMono/
+sudo curl -s -L https://github.com/ryanoasis/nerd-fonts/releases/latest/download/DroidSansMono.tar.xz | tar xvJ -C /usr/local/share/fonts/DroidSansMono/
+
+sudo chown -R root: /usr/local/share/fonts
+sudo chmod -R 644 /usr/local/share/fonts
+sudo restorecon -vFr /usr/local/share/fonts
+sudo fc-cache -v

@@ -59,7 +59,7 @@ bindkey '^[[1;5C' forward-word                  # ctrl+right go forward one word
 bindkey '^[[1;5D' backward-word                 # ctrl+left  go backward one word
 bindkey '^H'      backward-kill-word            # ctrl+bs    delete previous word
 bindkey '^[[3;5~' kill-word                     # ctrl+del   delete next word
-bindkey '^J'      backward-kill-line            # ctrl+j     delete everything before cursor
+#bindkey '^J'      backward-kill-line            # ctrl+j     delete everything before cursor # BUGS mc :(
 bindkey '^[[D'    backward-char                 # left       move cursor one char backward
 bindkey '^[[C'    forward-char                  # right      move cursor one char forward
 bindkey '^[[A'    up-line-or-beginning-search   # up         prev command in history

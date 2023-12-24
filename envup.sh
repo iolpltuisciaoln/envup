@@ -57,15 +57,15 @@ curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/fzfzsh >~/.f
 
 sudo usermod -s $(which zsh) $USER
 
-sudo mkdir -p /usr/local/share/fonts/JetBrainsMono
-sudo mkdir -p /usr/local/share/fonts/FiraMono
-sudo mkdir -p /usr/local/share/fonts/DroidSansMono
+sudo mkdir -p /usr/local/fonts/JetBrainsMono
+sudo mkdir -p /usr/local/fonts/FiraMono
+sudo mkdir -p /usr/local/fonts/DroidSansMono
 
-sudo curl -s -L https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.tar.xz | tar xvJ -C /usr/local/share/fonts/JetBrainsMono/
-sudo curl -s -L https://github.com/ryanoasis/nerd-fonts/releases/latest/download/FiraMono.tar.xz | tar xvJ -C /usr/local/share/fonts/FiraMono/
-sudo curl -s -L https://github.com/ryanoasis/nerd-fonts/releases/latest/download/DroidSansMono.tar.xz | tar xvJ -C /usr/local/share/fonts/DroidSansMono/
+sudo curl -s -L https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.tar.xz | tar xvJ -C /usr/local/fonts/JetBrainsMono/
+sudo curl -s -L https://github.com/ryanoasis/nerd-fonts/releases/latest/download/FiraMono.tar.xz | tar xvJ -C /usr/local/fonts/FiraMono/
+sudo curl -s -L https://github.com/ryanoasis/nerd-fonts/releases/latest/download/DroidSansMono.tar.xz | tar xvJ -C /usr/local/fonts/DroidSansMono/
 
-sudo chown -R root: /usr/local/share/fonts
-sudo chmod -R 644 /usr/local/share/fonts
-sudo restorecon -vFr /usr/local/share/fonts
+sudo chown -R root: /usr/local/fonts
+sudo chmod -R 755 /usr/local/fonts
+sudo restorecon -vFr /usr/local/fonts
 sudo fc-cache -v

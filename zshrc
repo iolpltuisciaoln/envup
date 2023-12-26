@@ -3,8 +3,9 @@
 # confirmations, etc.) must go above this block; everything else may go below.
 #zmodload zsh/zprof
 
-if [ -z "$TMUX" ]; then
-    exec tmux attach
+if [[ -n "$PS1" ]] && [[ -z "$TMUX" ]]
+then
+        tmux && exit
 fi
 
 

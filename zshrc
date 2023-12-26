@@ -5,7 +5,7 @@
 
 if [[ -n "$PS1" ]] && [[ -z "$TMUX" ]]
 then
-        tmux && exit
+        tmux attach && exit
 fi
 
 

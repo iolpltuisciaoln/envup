@@ -29,6 +29,8 @@ source $ZSH/oh-my-zsh.sh
 zle     -N   fzf-file-widget
 bindkey '^F' fzf-file-widget
 
+zle     -N   jump
+bindkey '^J' jump
 
 
 # If NumLock is off, translate keys to make them appear the same as with NumLock on.

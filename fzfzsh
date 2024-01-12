@@ -38,14 +38,31 @@ accept-line() {
 zle -N accept-line
 
 function man() {
-    $MAN="/bin/man"
     if [ "$#" -gt 0 ]; then
-        /bin/man $1
+        /bin/man $1 | col -bx | bat --language=man --plain --color always --theme="Monokai Extended"
         return
     fi
-    local choice
-    choice=$(/bin/man -k . | fzf -q "'$1" --prompt='man> ' --preview $'echo {} | tr -d \'()\' | awk \'{printf "%s ", $2} {print $1}\' | xargs -r /bin/man' | tr -d '()' | awk '{printf "%s ", $2} {print $1}' | bat -l /bin/man -p)
-    /bin/man $(echo $choice | tr -d '"')
+
+    batman="/bin/man {1} | col -bx | bat --language=man --plain --color always --theme=\"Monokai Extended\""
+    /bin/man -k . | sort \
+        | awk -v cyan=$(tput setaf 6) -v blue=$(tput setaf 4) -v res=$(tput sgr0) -v bld=$(tput bold) '{ $1=cyan bld $1; $2=res blue;} 1' \
+        | fzf  \
+        -q "'$1" \
+        --ansi \
+        --tiebreak=begin \
+        --prompt=' Man > '  \
+        --preview-window 'up,50%,rounded,<50(up,85%,border-bottom)' \
+        --preview "${batman}" \
+        --bind "enter:become(man {1})" 
+    zle reset-prompt
+}
+
+function dnf() {
+    if [ "$#" -gt 0 ]; then
+        `which dnf` "$@"
+    else
+        ~/.dnf.fzf
+    fi
 }
 
 #

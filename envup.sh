@@ -48,12 +48,15 @@ fi
 curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/zshrc >~/.zshrc
 curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/zshenv >~/.zshenv
 curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/tmux_network_bw.sh >~/.tmux_network_bw.sh
-chmod +x ~/.tmux_network_bw.sh
 curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/aliases.docker.zsh >~/.aliases.docker.zsh
 curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/aliases.zsh >~/.aliases.zsh
 curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/tmux.conf >~/.tmux.conf
 curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/p10k.zsh >~/.p10k.zsh
 curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/fzfzsh >~/.fzf.zsh
+curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/dnffzf >~/.dnf.fzf
+
+chmod +x ~/.tmux_network_bw.sh
+chmod +x ~/.dnf.fzf
 
 sudo usermod -s $(which zsh) $USER
 

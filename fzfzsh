@@ -65,28 +65,55 @@ function dnf() {
     fi
 }
 
-#
-# Google Chrome
-# c - browse chrome history
+
+# FF browse history
+
 h() {
     local cols sep google_history open
     cols=$((COLUMNS / 3))
     sep='{::}'
 
     if [ "$(uname)" = "Darwin" ]; then
-        google_history="$HOME/Library/Application Support/Google/Chrome/Default/History"
+        brows_hist_db="$HOME/Library/Application Support/Google/Chrome/Default/History"
         open=open
     else
-        google_history="$HOME/.config/google-chrome/Default/History"
+        cp -f $HOME/.mozilla/firefox/*/places.sqlite /tmp/h
         open=xdg-open
     fi
-    cp -f "$google_history" /tmp/h
     sqlite3 -separator $sep /tmp/h \
-        "select substr(title, 1, $cols), url
-  from urls order by last_visit_time desc" |
-        awk -F $sep '{printf "%-'$cols's  \x1b[36m%s\x1b[m\n", $1, $2}' |
-        fzf --ansi --multi | sed 's#.*\(https*://\)#\1#' | xargs $open >/dev/null 2>/dev/null
+        "select datetime(v.visit_date/1000000, 'unixepoch'), substr(p.title, 1, $cols), p.url\
+        from moz_places p \
+        JOIN moz_historyvisits v ON p.id = v.place_id \
+        GROUP BY p.url\
+        ORDER BY last_visit_date DESC" |
+        awk -F $sep '{printf "%s  \x1b[36m%s  \x1b[m%s\n", $1, $2, $3}' |
+        sed -E 's/\x1b\[[0-9;]+m  //g' |
+        fzf --ansi --multi |
+        xargs $open >/dev/null 2>/dev/null
 }
+
+# #
+# # Google Chrome
+# # c - browse chrome history
+# h() {
+#     local cols sep google_history open
+#     cols=$((COLUMNS / 3))
+#     sep='{::}'
+
+#     if [ "$(uname)" = "Darwin" ]; then
+#         google_history="$HOME/Library/Application Support/Google/Chrome/Default/History"
+#         open=open
+#     else
+#         google_history="$HOME/.config/google-chrome/Default/History"
+#         open=xdg-open
+#     fi
+#     cp -f "$google_history" /tmp/h
+#     sqlite3 -separator $sep /tmp/h \
+#         "select substr(title, 1, $cols), url
+#   from urls order by last_visit_time desc" |
+#         awk -F $sep '{printf "%-'$cols's  \x1b[36m%s\x1b[m\n", $1, $2}' |
+#         fzf --ansi --multi | sed 's#.*\(https*://\)#\1#' | xargs $open >/dev/null 2>/dev/null
+# }
 
 # b - browse chrome bookmarks
 b() {

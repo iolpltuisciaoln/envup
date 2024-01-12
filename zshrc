@@ -26,8 +26,11 @@ source $ZSH/oh-my-zsh.sh
 [[ ! -f ~/.aliases.docker.zsh ]] || source ~/.aliases.docker.zsh
 [[ ! -f ~/.aliases.zsh ]] || source ~/.aliases.zsh
 
-zle     -N   fzf-file-widget
-bindkey '^F' fzf-file-widget
+# zle     -N   fzf-file-widget
+# bindkey '^F' fzf-file-widget
+
+zle     -N   rgfzf
+bindkey '^F' rgfzf
 
 zle     -N   jump
 bindkey '^J' jump

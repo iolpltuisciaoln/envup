@@ -32,6 +32,9 @@ bindkey '^F' fzf-file-widget
 zle     -N   jump
 bindkey '^J' jump
 
+opendir () { xdg-open . }
+zle -N opendir
+bindkey '^O' opendir
 
 # If NumLock is off, translate keys to make them appear the same as with NumLock on.
 bindkey -s '^[OM' '^M'  # enter

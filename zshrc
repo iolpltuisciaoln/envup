@@ -14,7 +14,7 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
 fi
 
 # If you come from bash you might have to change your $PATH.
-export PATH=$HOME/bin:/usr/local/bin:$PATH:$HOME/.local/bin
+export PATH=$PATH:$HOME/bin:$HOME/.local/bin:/usr/local/bin
 #! Не меня порядок следующих 4х строк !#
 export ZSH=~/.oh-my-zsh
 ZSH_THEME="powerlevel10k/powerlevel10k"
@@ -35,9 +35,11 @@ bindkey '^F' rgfzf
 zle     -N   jump
 bindkey '^J' jump
 
+
 opendir () { xdg-open . }
 zle -N opendir
 bindkey '^O' opendir
+
 
 # If NumLock is off, translate keys to make them appear the same as with NumLock on.
 bindkey -s '^[OM' '^M'  # enter
@@ -89,12 +91,13 @@ bindkey "^[[6~" history-beginning-search-forward
 zstyle ':completion:*' use-cache on
 zstyle ':completion:*' cache-path "$XDG_CACHE_HOME/zsh/.zcompcache"
 
-zstyle ':fzf-tab:*' fzf-flags --height=100%
+zstyle ':fzf-tab:*' fzf-flags --height 100% --bind 'tab:toggle+down,shift-tab:toggle+up' --bind 'ctrl-a:toggle-all' --border=rounded --preview-window nohidden --prompt='> ' --pointer='▶' --marker='✓'
 zstyle ':fzf-tab:*' continuous-trigger '/'
+zstyle ':fzf-tab:complete:*' fzf-preview 'bat --color=always --style=numbers --line-range=:500 $realpath 2>/dev/null || cat $realpath 2>/dev/null || ls --color $realpath'
 zstyle ':completion:*:(kill|ps):*' ignored-patterns '0'
 zstyle ':completion:*:*:*:*:processes' command 'ps -auxfww --no-headers'
 zstyle ':fzf-tab:complete:(kill|ps):argument-rest' fzf-preview 'ps --pid=$word -o cmd -f --no-headers -w -w'
-zstyle ':fzf-tab:complete:(kill|ps):argument-rest' fzf-flags --preview-window=down:3:wrap 
+zstyle ':fzf-tab:complete:(kill|ps):argument-rest' fzf-flags --preview-window=down:3:wrap
 
 zstyle ':fzf-tab:complete:systemctl-*:*' fzf-preview 'SYSTEMD_COLORS=1 systemctl status $word'
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
@@ -105,5 +108,6 @@ zstyle ':fzf-tab:complete:(-command-|-parameter-|-brace-parameter-|export|unset|
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+[[ ! -f ~/.fzf.zsh ]] || source ~/.fzf.zsh
 # fuzzy search ripgrep
 #rg . | fzf | cut -d ":" -f 1

@@ -39,11 +39,11 @@ zle -N accept-line
 
 function man() {
     if [ "$#" -gt 0 ]; then
-        /bin/man $1 | col -bx | bat --language=man --plain --color always --theme="Monokai Extended"
+        /bin/man $1 | col -bx | batcat --language=man --plain --color always --theme="Monokai Extended"
         return
     fi
 
-    batman="/bin/man {1} | col -bx | bat --language=man --plain --color always --theme=\"Monokai Extended\""
+    batman="/bin/man {1} | col -bx | batcat --language=man --plain --color always --theme=\"Monokai Extended\""
     /bin/man -k . | sort \
         | awk -v cyan=$(tput setaf 6) -v blue=$(tput setaf 4) -v res=$(tput sgr0) -v bld=$(tput bold) '{ $1=cyan bld $1; $2=res blue;} 1' \
         | fzf  \
@@ -153,17 +153,18 @@ jump() {
 }
 
 function rgfzf() {
-    local QF QR QM
-    QF="$(mktemp "${TMPDIR:-/tmp}/rgfzf.qf.XXXXXX")" || return 1
-    QR="$(mktemp "${TMPDIR:-/tmp}/rgfzf.qr.XXXXXX")" || { rm -f "$QF"; return 1; }
-    QM="$(mktemp "${TMPDIR:-/tmp}/rgfzf.qm.XXXXXX")" || { rm -f "$QF" "$QR"; return 1; }
-    trap 'rm -f -- "$QF" "$QR" "$QM"' EXIT INT TERM HUP
+  local QF QR QM
+  QF="$(mktemp "${TMPDIR:-/tmp}/rgfzf.qf.XXXXXX")" || return 1
+  QR="$(mktemp "${TMPDIR:-/tmp}/rgfzf.qr.XXXXXX")" || { rm -f "$QF"; return 1; }
+  QM="$(mktemp "${TMPDIR:-/tmp}/rgfzf.qm.XXXXXX")" || { rm -f "$QF" "$QR"; return 1; }
+  trap 'rm -f -- "$QF" "$QR" "$QM"' EXIT INT TERM HUP
+
   print -r -- f > "$QM"
 
   local INITIAL_QUERY="${*:-}"
   local ret
 
-  # Base commands (keep them simple; no nested quoting)
+  # Base commands (kept simple)
   local FD_CMD='fd --type f --hidden --follow --exclude .git .'
   local RG_CMD='rg --column --line-number --no-heading --color=always --smart-case'
 
@@ -178,11 +179,28 @@ function rgfzf() {
       --preview-window 'up,60%,border-bottom,+{2}+3/3,~3' \
       \
       --bind "start:unbind(change)" \
-      --bind "change:reload(sh -c 'fq=\$(cat \"$QF\" 2>/dev/null); if [ -n \"\$fq\" ]; then fd --type f --hidden --follow --exclude .git -g \"*\$fq*\" -0 . | xargs -0 rg --column --line-number --no-heading --color=always --smart-case -- \"\$1\"; else rg --column --line-number --no-heading --color=always --smart-case -- \"\$1\"; fi' _ {q} || true)" \
       \
-      --bind "ctrl-r:transform:sh -c 'm=\$(cat \"$QM\" 2>/dev/null); if [ \"\$m\" = r ]; then echo ignore; else echo \"execute-silent(echo {q} > $QF; echo r > $QM)+transform-query(cat $QR 2>/dev/null)+change-prompt(ripgrep> )+disable-search+rebind(change)+reload(sh -c \\\"fq=\\\\\\\$(cat $QF 2>/dev/null); if [ -n \\\\\\\"\\\\\\\$fq\\\\\\\" ]; then fd --type f --hidden --follow --exclude .git -g \\\\\\\"*\\\\\\\$fq*\\\\\\\" -0 . | xargs -0 rg --column --line-number --no-heading --color=always --smart-case -- \\\\\\\"\\\\\\\$1\\\\\\\"; else rg --column --line-number --no-heading --color=always --smart-case -- \\\\\\\"\\\\\\\$1\\\\\\\"; fi\\\" _ {q} || true)\"; fi'" \
+      --bind "change:reload(sh -c 'fq=\$(cat \"$QF\" 2>/dev/null); if [ -n \"\$fq\" ]; then fd --type f --hidden --follow --exclude .git -g \"*\$fq*\" -0 . | xargs -0 $RG_CMD -- \"\$1\"; else $RG_CMD -- \"\$1\"; fi' _ {q} || true)" \
       \
-      --bind "ctrl-f:transform:sh -c 'm=\$(cat \"$QM\" 2>/dev/null); if [ \"\$m\" = f ]; then echo ignore; else echo \"execute-silent(echo {q} > $QR; echo f > $QM)+transform-query(cat $QF 2>/dev/null)+change-prompt(files> )+enable-search+unbind(change)+reload(fd --type f --hidden --follow --exclude .git .)\"; fi'" \
+      --bind "ctrl-r:transform:sh -c '
+        m=\$(cat \"$QM\" 2>/dev/null)
+        if [ \"\$m\" = r ]; then
+          echo ignore
+        else
+          # Save current file-mode query safely (handles single quotes etc.), flip mode, restore rg query
+          echo \"execute-silent(sh -c \\\"printf %s \\\\\\\"\\\\\\\$1\\\\\\\" > \\\\\\\"\\\\\\\$2\\\\\\\"\\\" _ {q} $QF; printf r > $QM)+transform-query(cat $QR 2>/dev/null)+change-prompt(ripgrep> )+disable-search+rebind(change)+reload(sh -c \\\\\\\"fq=\\\\\\\\\\\\\\\$(cat $QF 2>/dev/null); if [ -n \\\\\\\\\\\\\\\"\\\\\\\\\\\\\\\$fq\\\\\\\\\\\\\\\" ]; then fd --type f --hidden --follow --exclude .git -g \\\\\\\\\\\\\\\"*\\\\\\\\\\\\\\\$fq*\\\\\\\\\\\\\\\" -0 . | xargs -0 $RG_CMD -- \\\\\\\\\\\\\\\"\\\\\\\\\\\\\\\$1\\\\\\\\\\\\\\\"; else $RG_CMD -- \\\\\\\\\\\\\\\"\\\\\\\\\\\\\\\$1\\\\\\\\\\\\\\\"; fi\\\\\\\" _ {q} || true)\"
+        fi
+      '" \
+      \
+      --bind "ctrl-f:transform:sh -c '
+        m=\$(cat \"$QM\" 2>/dev/null)
+        if [ \"\$m\" = f ]; then
+          echo ignore
+        else
+          # Save current rg-mode query safely, flip mode, restore file query
+          echo \"execute-silent(sh -c \\\"printf %s \\\\\\\"\\\\\\\$1\\\\\\\" > \\\\\\\"\\\\\\\$2\\\\\\\"\\\" _ {q} $QR; printf f > $QM)+transform-query(cat $QF 2>/dev/null)+change-prompt(files> )+enable-search+unbind(change)+reload($FD_CMD)\"
+        fi
+      '" \
       \
       --bind 'enter:become(if [[ "{1}" == *:*:* ]]; then echo {1} | cut -d: -f1; else echo {1}; fi)'
   )"

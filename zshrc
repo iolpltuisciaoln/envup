@@ -109,5 +109,6 @@ zstyle ':fzf-tab:complete:(-command-|-parameter-|-brace-parameter-|export|unset|
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 [[ ! -f ~/.fzf.zsh ]] || source ~/.fzf.zsh
+[[ ! -f ~/.aliases.zsh ]] || source ~/.aliases.zsh
 # fuzzy search ripgrep
 #rg . | fzf | cut -d ":" -f 1

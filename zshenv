@@ -1,5 +1,4 @@
 #! PRELOAD FUNCTIONS FIST !#
-[[ ! -f ~/.aliases.zsh ]] || source ~/.aliases.zsh
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 #!
 
@@ -9,7 +8,7 @@ export LANG=en_US.UTF-8
 export LANGUAGE=en_US
 COMPLETION_WAITING_DOTS="true"
 ENABLE_CORRECTION="true"
-export MANPAGER="sh -c 'bat -l man -p'"
+export MANPAGER="sh -c 'batcat -l man -p'"
 export TERM=screen-256color #screen-256color xterm-256color
 export COLORTERM=truecolor
 export FZF_HEADER_DEFAULT="info here.........."
@@ -52,8 +51,6 @@ export FZF_DEFAULT_OPTS="+s
 # --bind 'ctrl-v:execute(nvim {} < /dev/tty > /dev/tty 2>&1)+accept'
 # "
 
-
-
 export FZF_CTRL_T_OPTS="+s --preview 'fzf-custom-preview {}' --preview-window nohidden"
 export FZF_CTRL_R_OPTS="+s --preview 'echo {}' --preview-window 'down:4:wrap:nohidden'"
 export FZF_ALT_C_OPTS="+s --preview-window nohidden --preview 'tree --charset=utf-8 -C {} | head -200'"
@@ -84,7 +81,7 @@ export EZA_COLORS="sn=32;0:sb=32;0:uu=33;40:gu=33;40:in=0;38:lc=0;38:ur=0;33:uw=
 
 HISTSIZE=10000000
 SAVEHIST=10000000
-setopt INC_APPEND_HISTORY        # Write to the history file immediately, not when the shell exits.
-setopt SHARE_HISTORY             # Share history between all sessions.
+setopt INC_APPEND_HISTORY # Write to the history file immediately, not when the shell exits.
+setopt SHARE_HISTORY      # Share history between all sessions.
 setopt HIST_IGNORE_ALL_DUPS
 setopt hist_ignore_dups

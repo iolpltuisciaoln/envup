@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-INTERVAL="1" # update interval in seconds
+INTERVAL="3" # update interval in seconds
 
 network_name=$(ip r | grep default | head -n1 | awk '{print $5}')
 
@@ -26,7 +26,9 @@ main() {
     final_upload=$(cat /sys/class/net/$network_name/statistics/tx_bytes)
 
     total_download_bps=$(expr $final_download - $initial_download)
+    total_download_bps=$(expr $total_download_bps)
     total_upload_bps=$(expr $final_upload - $initial_upload)
+    total_upload_bps=$(expr $total_upload_bps/$INTERVAL)
 
     if [ $total_download_bps -gt 1073741824 ]; then
         output_download=$(echo "$total_download_bps 1024" | awk '{printf "%.2f \n", $1/($2 * $2 * $2)}')

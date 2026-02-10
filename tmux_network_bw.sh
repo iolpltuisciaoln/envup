@@ -5,46 +5,51 @@ INTERVAL="1" # update interval in seconds
 network_name=$(ip r | grep default | head -n1 | awk '{print $5}')
 
 main() {
-    while true; do
-        output_download=""
-        output_upload=""
-        output_download_unit=""
-        output_upload_unit=""
+    # while true; do
+    output_download=""
+    output_upload=""
+    output_download_unit=""
+    output_upload_unit=""
 
-        initial_download=$(cat /sys/class/net/$network_name/statistics/rx_bytes)
-        initial_upload=$(cat /sys/class/net/$network_name/statistics/tx_bytes)
+    initial_download=$(cat /sys/class/net/$network_name/statistics/rx_bytes)
+    initial_upload=$(cat /sys/class/net/$network_name/statistics/tx_bytes)
 
-        sleep $INTERVAL
+    sleep $INTERVAL
 
-        final_download=$(cat /sys/class/net/$network_name/statistics/rx_bytes)
-        final_upload=$(cat /sys/class/net/$network_name/statistics/tx_bytes)
+    if ping -q -c 1 -w 2 8.8.8.8 >/dev/null; then
+        ping_status="#[bold]#[fg=#18f164]⊙"
+    else
+        ping_status="#[bold]#[fg=#f01c2b]∅"
+    fi
 
-        total_download_bps=$(expr $final_download - $initial_download)
-        total_upload_bps=$(expr $final_upload - $initial_upload)
+    final_download=$(cat /sys/class/net/$network_name/statistics/rx_bytes)
+    final_upload=$(cat /sys/class/net/$network_name/statistics/tx_bytes)
 
-        if [ $total_download_bps -gt 1073741824 ]; then
-            output_download=$(echo "$total_download_bps 1024" | awk '{printf "%.2f \n", $1/($2 * $2 * $2)}')
-            output_download_unit="gB/s"
-        elif [ $total_download_bps -gt 1048576 ]; then
-            output_download=$(echo "$total_download_bps 1024" | awk '{printf "%.2f \n", $1/($2 * $2)}')
-            output_download_unit="mB/s"
-        else
-            output_download=$(echo "$total_download_bps 1024" | awk '{printf "%.2f \n", $1/$2}')
-            output_download_unit="kB/s"
-        fi
+    total_download_bps=$(expr $final_download - $initial_download)
+    total_upload_bps=$(expr $final_upload - $initial_upload)
 
-        if [ $total_upload_bps -gt 1073741824 ]; then
-            output_upload=$(echo "$total_download_bps 1024" | awk '{printf "%.2f \n", $1/($2 * $2 * $2)}')
-            output_upload_unit="gB/s"
-        elif [ $total_upload_bps -gt 1048576 ]; then
-            output_upload=$(echo "$total_upload_bps 1024" | awk '{printf "%.2f \n", $1/($2 * $2)}')
-            output_upload_unit="mB/s"
-        else
-            output_upload=$(echo "$total_upload_bps 1024" | awk '{printf "%.2f \n", $1/$2}')
-            output_upload_unit="kB/s"
-        fi
+    if [ $total_download_bps -gt 1073741824 ]; then
+        output_download=$(echo "$total_download_bps 1024" | awk '{printf "%.2f \n", $1/($2 * $2 * $2)}')
+        output_download_unit="G"
+    elif [ $total_download_bps -gt 1048576 ]; then
+        output_download=$(echo "$total_download_bps 1024" | awk '{printf "%.2f \n", $1/($2 * $2)}')
+        output_download_unit="m"
+    else
+        output_download=$(echo "$total_download_bps 1024" | awk '{printf "%.2f \n", $1/$2}')
+        output_download_unit="k"
+    fi
 
-        echo "↓ $output_download $output_download_unit • ↑ $output_upload $output_upload_unit"
-    done
+    if [ $total_upload_bps -gt 1073741824 ]; then
+        output_upload=$(echo "$total_download_bps 1024" | awk '{printf "%.2f \n", $1/($2 * $2 * $2)}')
+        output_upload_unit="G"
+    elif [ $total_upload_bps -gt 1048576 ]; then
+        output_upload=$(echo "$total_upload_bps 1024" | awk '{printf "%.2f \n", $1/($2 * $2)}')
+        output_upload_unit="m"
+    else
+        output_upload=$(echo "$total_upload_bps 1024" | awk '{printf "%.2f \n", $1/$2}')
+        output_upload_unit="k"
+    fi
+
+    printf "#[bold]#[fg=#8be9fd] ↓%s %s %s #[fg=#8be9fd]↑%s %s" $output_download $output_download_unit $ping_status $output_upload $output_upload_unit
 }
-main
+printf " %s" "$(main)"

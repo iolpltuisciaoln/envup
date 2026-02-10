@@ -26,19 +26,21 @@ main() {
     fi
 
     total_download_bps=$(expr $final_download - $initial_download)
-    total_download_bps=$(expr $total_download_bps)
+    total_download_bps=$(expr $total_download_bps / $INTERVAL)
+    total_download_bps=$(expr $total_download_bps \* 8)
     total_upload_bps=$(expr $final_upload - $initial_upload)
-    total_upload_bps=$(expr $total_upload_bps/$INTERVAL)
+    total_upload_bps=$(expr $total_upload_bps / $INTERVAL)
+    total_upload_bps=$(expr $total_upload_bps \* 8)
 
     if [ $total_download_bps -gt 1073741824 ]; then
         output_download=$(echo "$total_download_bps 1024" | awk '{printf "%.2f \n", $1/($2 * $2 * $2)}')
         output_download_unit="G"
     elif [ $total_download_bps -gt 1048576 ]; then
         output_download=$(echo "$total_download_bps 1024" | awk '{printf "%.2f \n", $1/($2 * $2)}')
-        output_download_unit="m"
+        output_download_unit="M"
     else
         output_download=$(echo "$total_download_bps 1024" | awk '{printf "%.2f \n", $1/$2}')
-        output_download_unit="k"
+        output_download_unit="K"
     fi
 
     if [ $total_upload_bps -gt 1073741824 ]; then
@@ -46,10 +48,10 @@ main() {
         output_upload_unit="G"
     elif [ $total_upload_bps -gt 1048576 ]; then
         output_upload=$(echo "$total_upload_bps 1024" | awk '{printf "%.2f \n", $1/($2 * $2)}')
-        output_upload_unit="m"
+        output_upload_unit="M"
     else
         output_upload=$(echo "$total_upload_bps 1024" | awk '{printf "%.2f \n", $1/$2}')
-        output_upload_unit="k"
+        output_upload_unit="K"
     fi
 
     printf "#[bold]#[fg=#8be9fd] ↓%s %s %s #[fg=#8be9fd]↑%s %s" $output_download $output_download_unit $ping_status $output_upload $output_upload_unit

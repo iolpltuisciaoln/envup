@@ -90,12 +90,20 @@ bindkey "^[[6~" history-beginning-search-forward
 
 zstyle ':completion:*' use-cache on
 zstyle ':completion:*' cache-path "$XDG_CACHE_HOME/zsh/.zcompcache"
+zstyle ':completion:*:(kill|ps):*' ignored-patterns '0'
+zstyle ':completion:*:*:*:*:processes' command 'ps -auxfww --no-headers'
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'         # Case insensitive tab completion
+zstyle ':completion:*' completer _expand_alias _complete _ignored # Expand aliases with tab
+zstyle ':completion:*' menu select                 # Use menu selection for completion
+zstyle ':completion:*' list-suffixes               # Show ambiguous components for partial pathnames
+zstyle ':completion:*' rehash true                 # Auto find new executables in path
+zstyle ':completion:*' accept-exact '*(N)'         # Speed up completions
+
+
 
 zstyle ':fzf-tab:*' fzf-flags --height 100% --bind 'tab:toggle+down,shift-tab:toggle+up' --bind 'ctrl-a:toggle-all' --border=rounded --preview-window nohidden --prompt='> ' --pointer='▶' --marker='✓'
 zstyle ':fzf-tab:*' continuous-trigger '/'
 zstyle ':fzf-tab:complete:*' fzf-preview 'bat --color=always --style=numbers --line-range=:500 $realpath 2>/dev/null || cat $realpath 2>/dev/null || ls --color $realpath'
-zstyle ':completion:*:(kill|ps):*' ignored-patterns '0'
-zstyle ':completion:*:*:*:*:processes' command 'ps -auxfww --no-headers'
 zstyle ':fzf-tab:complete:(kill|ps):argument-rest' fzf-preview 'ps --pid=$word -o cmd -f --no-headers -w -w'
 zstyle ':fzf-tab:complete:(kill|ps):argument-rest' fzf-flags --preview-window=down:3:wrap
 
@@ -109,6 +117,5 @@ zstyle ':fzf-tab:complete:(-command-|-parameter-|-brace-parameter-|export|unset|
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 [[ ! -f ~/.fzf.zsh ]] || source ~/.fzf.zsh
-[[ ! -f ~/.aliases.zsh ]] || source ~/.aliases.zsh
 # fuzzy search ripgrep
 #rg . | fzf | cut -d ":" -f 1

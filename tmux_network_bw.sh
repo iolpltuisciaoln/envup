@@ -16,14 +16,14 @@ main() {
 
     sleep $INTERVAL
 
+    final_download=$(cat /sys/class/net/$network_name/statistics/rx_bytes)
+    final_upload=$(cat /sys/class/net/$network_name/statistics/tx_bytes)
+
     if ping -q -c 1 -w 2 8.8.8.8 >/dev/null; then
         ping_status="#[bold]#[fg=#18f164]⊙"
     else
         ping_status="#[bold]#[fg=#f01c2b]∅"
     fi
-
-    final_download=$(cat /sys/class/net/$network_name/statistics/rx_bytes)
-    final_upload=$(cat /sys/class/net/$network_name/statistics/tx_bytes)
 
     total_download_bps=$(expr $final_download - $initial_download)
     total_download_bps=$(expr $total_download_bps)

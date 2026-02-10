@@ -2,7 +2,7 @@
 
 INTERVAL="1" # update interval in seconds
 
-network_name=$(tmux show-option -gqv "@network-bandwidth-interface")
+network_name=$(ip r | grep default | head -n1 | awk '{print $5}')
 
 main() {
     while true; do

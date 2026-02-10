@@ -1,7 +1,7 @@
 alias ee='mcedit'
 # alias mc='. /usr/libexec/mc/mc-wrapper.sh'
 alias -g G='| grep -i'
-alias jfzf='journalctl -n1000 -f|fzf --tail 100000 --tac --no-sort --exact --wrap'
+alias jf='journalctl -n1000 -f|fzf --tail 100000 --tac --no-sort --exact --wrap'
 alias dni='dnf install'
 alias l='eza --group-directories-first'
 alias ll='eza -Flahg --icons --group-directories-first --sort=modified'

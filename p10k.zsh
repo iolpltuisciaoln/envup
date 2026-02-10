@@ -279,7 +279,7 @@
 
   # The default icon shown next to non-writable and non-existent directories when
   # POWERLEVEL9K_DIR_SHOW_WRITABLE is set to v3.
-  # typeset -g POWERLEVEL9K_LOCK_ICON='⭐'
+#   typeset -g POWERLEVEL9K_LOCK_ICON='⭐'
 
   # POWERLEVEL9K_DIR_CLASSES allows you to specify custom icons and colors for different
   # directories. It must be an array with 3 * N elements. Each triplet consists of:
@@ -840,19 +840,23 @@
 
   ##################################[ context: user@hostname ]##################################
   # Context color when running with privileges.
-  typeset -g POWERLEVEL9K_CONTEXT_ROOT_FOREGROUND=178
+  typeset -g POWERLEVEL9K_CONTEXT_ROOT_FOREGROUND=#e71b24
   # Context color in SSH without privileges.
-  typeset -g POWERLEVEL9K_CONTEXT_{REMOTE,REMOTE_SUDO}_FOREGROUND=180
+  typeset -g POWERLEVEL9K_CONTEXT_SSH_FOREGROUND=#50fa7b
   # Default context color (no privileges, no SSH).
 
   # Context format when running with privileges: bold user@hostname.
-  typeset -g POWERLEVEL9K_CONTEXT_ROOT_TEMPLATE='%B%n@%m'
+  typeset -g POWERLEVEL9K_CONTEXT_ROOT_TEMPLATE='｢%B%n@%m%b⸥%F{#2c2c2c}◥'
   # Context format when in SSH without privileges: user@hostname.
-  typeset -g POWERLEVEL9K_CONTEXT_{REMOTE,REMOTE_SUDO}_TEMPLATE='%n@%m'
+  typeset -g POWERLEVEL9K_CONTEXT_SSH_TEMPLATE='｢%B%n@%m%b⸥%F{#2c2c2c}◥'
   # Default context format (no privileges, no SSH): user@hostname.
+#   typeset -g POWERLEVEL9K_CONTEXT_TEMPLATE='%n@%m:'
+##  typeset -g POWERLEVEL9K_CONTEXT_TEMPLATE='｢%B%n⸥'
+
 
 typeset -g POWERLEVEL9K_CONTEXT_BACKGROUND=#3b3b3b # #00005E
 typeset -g POWERLEVEL9K_CONTEXT_FOREGROUND=#50fa7b # #08f6dc
+
 typeset -g POWERLEVEL9K_CONTEXT_TEMPLATE='｢%B%n%b⸥%F{#2c2c2c}◥'
 
   # Don't show context unless running with privileges or in SSH.
@@ -860,9 +864,9 @@ typeset -g POWERLEVEL9K_CONTEXT_TEMPLATE='｢%B%n%b⸥%F{#2c2c2c}◥'
   # typeset -g POWERLEVEL9K_CONTEXT_{DEFAULT,SUDO}_{CONTENT,VISUAL_IDENTIFIER}_EXPANSION=
 
   # Custom icon.
-  # typeset -g POWERLEVEL9K_CONTEXT_VISUAL_IDENTIFIER_EXPANSION='⭐'
+#   typeset -g POWERLEVEL9K_CONTEXT_VISUAL_IDENTIFIER_EXPANSION='⭐'
   # Custom prefix.
-  # typeset -g POWERLEVEL9K_CONTEXT_PREFIX='%fwith '
+#   typeset -g POWERLEVEL9K_CONTEXT_PREFIX='%fwith '
 
   ###[ virtualenv: python virtual environment (https://docs.python.org/3/library/venv.html) ]###
   # Python virtual environment color.

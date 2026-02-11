@@ -117,7 +117,7 @@
   typeset -g POWERLEVEL9K_BACKGROUND=                            # transparent background
   typeset -g POWERLEVEL9K_{LEFT,RIGHT}_{LEFT,RIGHT}_WHITESPACE=  # no surrounding whitespace
   typeset -g POWERLEVEL9K_{LEFT,RIGHT}_SUBSEGMENT_SEPARATOR=' '  # separate segments with a space
-  typeset -g POWERLEVEL9K_{LEFT,RIGHT}_SEGMENT_SEPARATOR='┆'        # no end-of-line symbol
+  typeset -g POWERLEVEL9K_{LEFT,RIGHT}_SEGMENT_SEPARATOR= #'┆'        # no end-of-line symbol
 
   # When set to true, icons appear before content on both sides of the prompt. When set
   # to false, icons go after content. If empty or not set, icons go before content in the left
@@ -847,9 +847,9 @@
   # Default context color (no privileges, no SSH).
 
   # Context format when running with privileges: bold user@hostname.
-  typeset -g POWERLEVEL9K_CONTEXT_ROOT_TEMPLATE='｢%B%n@%m%b⸥%F{#2c2c2c}◥'
+  typeset -g POWERLEVEL9K_CONTEXT_ROOT_TEMPLATE='%F{#c417d1}｢%F{#3b3b3b}%B%n@%m%b%F{#c417d1}⸥%F{#2c2c2c}◥'
   # Context format when in SSH without privileges: user@hostname.
-  typeset -g POWERLEVEL9K_CONTEXT_SSH_TEMPLATE='｢%B%n@%m%b⸥%F{#2c2c2c}◥'
+  typeset -g POWERLEVEL9K_CONTEXT_SSH_TEMPLATE='%F{#c417d1}｢%F{#3b3b3b}%B%n@%m%b%F{#c417d1}⸥%F{#2c2c2c}◥'
   # Default context format (no privileges, no SSH): user@hostname.
 #   typeset -g POWERLEVEL9K_CONTEXT_TEMPLATE='%n@%m:'
 ##  typeset -g POWERLEVEL9K_CONTEXT_TEMPLATE='｢%B%n⸥'

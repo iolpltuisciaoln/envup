@@ -840,7 +840,8 @@
 
   ##################################[ context: user@hostname ]##################################
   # Context color when running with privileges.
-  typeset -g POWERLEVEL9K_CONTEXT_ROOT_FOREGROUND=#e71b24
+  typeset -g POWERLEVEL9K_CONTEXT_ROOT_FOREGROUND=#3b3b3b # #e71b24
+  typeset -g POWERLEVEL9K_CONTEXT_ROOT_BACKGROUND=#FA5058
   # Context color in SSH without privileges.
   typeset -g POWERLEVEL9K_CONTEXT_SSH_FOREGROUND=#50fa7b
   # Default context color (no privileges, no SSH).
@@ -854,10 +855,11 @@
 ##  typeset -g POWERLEVEL9K_CONTEXT_TEMPLATE='｢%B%n⸥'
 
 
-typeset -g POWERLEVEL9K_CONTEXT_BACKGROUND=#3b3b3b # #00005E
-typeset -g POWERLEVEL9K_CONTEXT_FOREGROUND=#50fa7b # #08f6dc
+typeset -g POWERLEVEL9K_CONTEXT_BACKGROUND=#50fa7b # #00005E
+typeset -g POWERLEVEL9K_CONTEXT_FOREGROUND=#3b3b3b # #08f6dc
 
-typeset -g POWERLEVEL9K_CONTEXT_TEMPLATE='%F{#c417d1}｢%F{#50fa7b}%B%n%b%F{#c417d1}⸥%F{#2c2c2c}◥'
+# typeset -g POWERLEVEL9K_CONTEXT_TEMPLATE='%F{#c417d1}｢%F{#50fa7b}%B%n%b%F{#c417d1}⸥%F{#2c2c2c}◥'
+typeset -g POWERLEVEL9K_CONTEXT_TEMPLATE='%F{#c417d1}｢%F{#3b3b3b}%B%n%b%F{#c417d1}⸥%F{#2c2c2c}◥'
 
   # Don't show context unless running with privileges or in SSH.
   # Tip: Remove the next line to always show context.
@@ -1553,10 +1555,10 @@ typeset -g POWERLEVEL9K_CONTEXT_TEMPLATE='%F{#c417d1}｢%F{#50fa7b}%B%n%b%F{#c41
   # commands will contain the start times of their commands as opposed to the default
   # behavior where they contain the end times of their preceding commands.
   typeset -g POWERLEVEL9K_TIME_UPDATE_ON_COMMAND=false
-  # Custom icon.
-  typeset -g POWERLEVEL9K_TIME_VISUAL_IDENTIFIER_EXPANSION=''
+#   Custom icon.
+  typeset -g POWERLEVEL9K_TIME_VISUAL_IDENTIFIER_EXPANSION=
   # Custom prefix.
-  # typeset -g POWERLEVEL9K_TIME_PREFIX='%fat '
+#   typeset -g POWERLEVEL9K_TIME_PREFIX='%fat '
 
   # Example of a user-defined prompt segment. Function prompt_example will be called on every
   # prompt if `example` prompt segment is added to POWERLEVEL9K_LEFT_PROMPT_ELEMENTS or

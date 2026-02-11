@@ -857,7 +857,7 @@
 typeset -g POWERLEVEL9K_CONTEXT_BACKGROUND=#3b3b3b # #00005E
 typeset -g POWERLEVEL9K_CONTEXT_FOREGROUND=#50fa7b # #08f6dc
 
-typeset -g POWERLEVEL9K_CONTEXT_TEMPLATE='｢%B%n%b⸥%F{#2c2c2c}◥'
+typeset -g POWERLEVEL9K_CONTEXT_TEMPLATE='%F{#c417d1}｢%F{#50fa7b}%B%n%b%F{#c417d1}⸥%F{#2c2c2c}◥'
 
   # Don't show context unless running with privileges or in SSH.
   # Tip: Remove the next line to always show context.
@@ -1554,7 +1554,7 @@ typeset -g POWERLEVEL9K_CONTEXT_TEMPLATE='｢%B%n%b⸥%F{#2c2c2c}◥'
   # behavior where they contain the end times of their preceding commands.
   typeset -g POWERLEVEL9K_TIME_UPDATE_ON_COMMAND=false
   # Custom icon.
-  # typeset -g POWERLEVEL9K_TIME_VISUAL_IDENTIFIER_EXPANSION='⭐'
+  typeset -g POWERLEVEL9K_TIME_VISUAL_IDENTIFIER_EXPANSION=''
   # Custom prefix.
   # typeset -g POWERLEVEL9K_TIME_PREFIX='%fat '
 

@@ -103,14 +103,14 @@ zstyle ':completion:*' accept-exact '*(N)'         # Speed up completions
 
 zstyle ':fzf-tab:*' fzf-flags --height 100% --bind 'tab:toggle+down,shift-tab:toggle+up' --bind 'ctrl-a:toggle-all' --border=rounded --preview-window nohidden --prompt='> ' --pointer='▶' --marker='✓'
 zstyle ':fzf-tab:*' continuous-trigger '/'
-zstyle ':fzf-tab:complete:*' fzf-preview 'bat --color=always --style=numbers --line-range=:500 $realpath 2>/dev/null || cat $realpath 2>/dev/null || ls --color $realpath'
+zstyle ':fzf-tab:complete:*' fzf-preview 'bat -A --color=always --style=numbers --line-range=:500 $realpath 2>/dev/null || cat $realpath 2>/dev/null || ls --color $realpath'
 zstyle ':fzf-tab:complete:(kill|ps):argument-rest' fzf-preview 'ps --pid=$word -o cmd -f --no-headers -w -w'
 zstyle ':fzf-tab:complete:(kill|ps):argument-rest' fzf-flags --preview-window=down:3:wrap
 
 zstyle ':fzf-tab:complete:systemctl-*:*' fzf-preview 'SYSTEMD_COLORS=1 systemctl status $word'
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
 zstyle ':fzf-tab:complete:ssh:*' fzf-preview 'cat ~/.ssh/config | grep -A 5 "Host %q"'
-zstyle ':fzf-tab:complete:more:*' fzf-preview '(batcat --style=numbers --color=always --line-range :200 $word|| tree --charset=utf-8 -C $word) 2> /dev/null | head -200'
+zstyle ':fzf-tab:complete:more:*' fzf-preview '(bat -A --style=numbers --color=always --line-range :200 $word|| tree --charset=utf-8 -C $word) 2> /dev/null | head -200'
 
 zstyle ':fzf-tab:complete:(-command-|-parameter-|-brace-parameter-|export|unset|expand):*' fzf-preview 'echo ${(P)word}'
 

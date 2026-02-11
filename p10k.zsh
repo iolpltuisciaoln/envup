@@ -840,26 +840,39 @@
 
   ##################################[ context: user@hostname ]##################################
   # Context color when running with privileges.
-  typeset -g POWERLEVEL9K_CONTEXT_ROOT_FOREGROUND=#3b3b3b # #e71b24
+  typeset -g POWERLEVEL9K_CONTEXT_ROOT_FOREGROUND=#2c2c2c # #3b3b3b # #e71b24
   typeset -g POWERLEVEL9K_CONTEXT_ROOT_BACKGROUND=#FA5058
   # Context color in SSH without privileges.
   typeset -g POWERLEVEL9K_CONTEXT_SSH_FOREGROUND=#50fa7b
   # Default context color (no privileges, no SSH).
 
-  # Context format when running with privileges: bold user@hostname.
-  typeset -g POWERLEVEL9K_CONTEXT_ROOT_TEMPLATE='%F{#c417d1}｢%F{#3b3b3b}%B%n@%m%b%F{#c417d1}⸥%F{#2c2c2c}◥'
-  # Context format when in SSH without privileges: user@hostname.
-  typeset -g POWERLEVEL9K_CONTEXT_SSH_TEMPLATE='%F{#c417d1}｢%F{#3b3b3b}%B%n@%m%b%F{#c417d1}⸥%F{#2c2c2c}◥'
   # Default context format (no privileges, no SSH): user@hostname.
 #   typeset -g POWERLEVEL9K_CONTEXT_TEMPLATE='%n@%m:'
 ##  typeset -g POWERLEVEL9K_CONTEXT_TEMPLATE='｢%B%n⸥'
 
 
 typeset -g POWERLEVEL9K_CONTEXT_BACKGROUND=#50fa7b # #00005E
-typeset -g POWERLEVEL9K_CONTEXT_FOREGROUND=#3b3b3b # #08f6dc
+typeset -g POWERLEVEL9K_CONTEXT_FOREGROUND=#2c2c2c # #08f6dc
 
 # typeset -g POWERLEVEL9K_CONTEXT_TEMPLATE='%F{#c417d1}｢%F{#50fa7b}%B%n%b%F{#c417d1}⸥%F{#2c2c2c}◥'
-typeset -g POWERLEVEL9K_CONTEXT_TEMPLATE='%F{#c417d1}｢%F{#3b3b3b}%B%n%b%F{#c417d1}⸥%F{#2c2c2c}◥'
+# typeset -g POWERLEVEL9K_CONTEXT_TEMPLATE='%F{#c417d1}｢%F{#2c2c2c}%Bz m%b%F{#c417d1}⸥%F{#2c2c2c}◥'
+# typeset -g POWERLEVEL9K_CONTEXT_TEMPLATE='%F{#c417d1}｢%F{#2c2c2c}%BΖ м%b%F{#2c2c2c}◥'
+if [[ -n "$TMUX" ]]; then
+    # Context format when running with privileges: bold user@hostname.
+    typeset -g POWERLEVEL9K_CONTEXT_ROOT_TEMPLATE='%F{#c417d1}｢%F{#2c2c2c}%B%n%b%F{#333333}◥'
+    # Context format when in SSH without privileges: user@hostname.
+    typeset -g POWERLEVEL9K_CONTEXT_SSH_TEMPLATE='%F{#c417d1}｢%F{#2c2c2c}%B%n%b%F{#3b3b3b}◥'
+
+    typeset -g POWERLEVEL9K_CONTEXT_TEMPLATE='%F{#c417d1}｢%F{#2c2c2c}%B%n%b%F{#333333}◥'
+else
+    # Context format when running with privileges: bold user@hostname.
+    typeset -g POWERLEVEL9K_CONTEXT_ROOT_TEMPLATE='%F{#c417d1}｢%F{#2c2c2c}%B%n@%m%b%F{#333333}◥'
+    # Context format when in SSH without privileges: user@hostname.
+    typeset -g POWERLEVEL9K_CONTEXT_SSH_TEMPLATE='%F{#c417d1}｢%F{#2c2c2c}%B%n@%m%b%F{#3b3b3b}◥'
+
+    typeset -g POWERLEVEL9K_CONTEXT_TEMPLATE='%F{#c417d1}｢%F{#2c2c2c}%B%n@%m%b%F{#333333}◥'
+fi
+
 
   # Don't show context unless running with privileges or in SSH.
   # Tip: Remove the next line to always show context.

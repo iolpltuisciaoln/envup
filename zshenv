@@ -4,6 +4,8 @@
 
 # ENV
 #export DISPLAY=:0
+export EZA_COLORS=
+export LS_COLORS='bd=0:ca=0:cd=0:di=0:do=0:ex=0:pi=0:fi=0:ln=0:mh=0:no=0:or=0:ow=0:sg=0:su=0:so=0:st=0:tw=0:'
 export LANG=en_US.UTF-8
 export LANGUAGE=en_US
 COMPLETION_WAITING_DOTS="true"

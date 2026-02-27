@@ -5,9 +5,8 @@
 
 if [[ -n "$PS1" ]] && [[ -z "$TMUX" ]]
 then
-        tmux attach && exit
+        tmux new-session -A && exit
 fi
-
 
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
@@ -97,7 +96,6 @@ zstyle ':completion:*' completer _expand_alias _complete _ignored # Expand alias
 zstyle ':completion:*' menu select                 # Use menu selection for completion
 zstyle ':completion:*' list-suffixes               # Show ambiguous components for partial pathnames
 zstyle ':completion:*' rehash true                 # Auto find new executables in path
-zstyle ':completion:*' accept-exact '*(N)'         # Speed up completions
 
 
 
@@ -119,3 +117,5 @@ zstyle ':fzf-tab:complete:(-command-|-parameter-|-brace-parameter-|export|unset|
 [[ ! -f ~/.fzf.zsh ]] || source ~/.fzf.zsh
 # fuzzy search ripgrep
 #rg . | fzf | cut -d ":" -f 1
+
+export LS_COLORS=

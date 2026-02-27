@@ -6,5 +6,5 @@ alias jf='journalctl -n1000 -f|fzf --tail 100000 --tac --no-sort --exact --wrap 
 alias dni='dnf install'
 alias l='eza -lahgF --group-directories-first --color-scale=size'
 alias lt='eza -lahgF --group-directories-first --sort=modified --color-scale=size'
-alias ll='eza -lahgF --extended --color-scale=size'
+alias ll='eza -lahgF --color-scale=size'
 alias dfh='df -H'

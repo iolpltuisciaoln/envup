@@ -40,7 +40,7 @@ main() {
         output_download_unit="M"
     else
         output_download=$(echo "$total_download_bps 1024" | awk '{printf "%.2f \n", $1/$2}')
-        output_download_unit="K"
+        output_download_unit="k"
     fi
 
     if [ $total_upload_bps -gt 1073741824 ]; then
@@ -51,9 +51,9 @@ main() {
         output_upload_unit="M"
     else
         output_upload=$(echo "$total_upload_bps 1024" | awk '{printf "%.2f \n", $1/$2}')
-        output_upload_unit="K"
+        output_upload_unit="k"
     fi
 
-    printf "#[bold]#[fg=#8be9fd] ↓%s %s %s #[fg=#8be9fd]↑%s %s" $output_download $output_download_unit $ping_status $output_upload $output_upload_unit
+    printf "#[bold]#[fg=#8be9fb] ↓%s#[fg=#11e9fb]%s %s #[fg=#8be9fb]↑%s#[fg=#11e9fb]%s" $output_download $output_download_unit $ping_status $output_upload $output_upload_unit
 }
 printf " %s" "$(main)"

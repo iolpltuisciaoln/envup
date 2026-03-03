@@ -22,8 +22,8 @@ prompt_tmux_or_zsh() {
     local selection raw
     if command -v fzf >/dev/null 2>&1; then
         raw=$(printf "%b\t%s\n%b\t%s" \
-                "$COLOR"'tmux' tmux \
                 "$COLOR"'zsh' zsh \
+                "$COLOR"'tmux' tmux \
                 |fzf "${fzf_opts[@]}"\
         )
         selection=$(printf "%s" "$raw" | cut -f2)

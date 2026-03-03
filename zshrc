@@ -14,7 +14,7 @@ prompt_tmux_or_zsh() {
     COLOR=$'\e[1;38;2;80;250;123m'   # #50fa7b (bold)
 
     # fzf options kept the same as before
-    fzf_opts=(--ansi --no-input --height=40% --margin=40%,20% --border --no-info \
+    fzf_opts=(--ansi --no-input --height=0% --margin=46%,30% --border --no-info \
                 --pointer='▶' --reverse --with-nth=1 --bind 'change:ignore' \
                 --bind 'ctrl-c:abort' --no-multi)
 

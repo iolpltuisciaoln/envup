@@ -41,16 +41,19 @@ prompt_tmux_or_zsh() {
 prompt_tmux_or_zsh
 
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+    source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
 # If you come from bash you might have to change your $PATH.
 export PATH=$PATH:$HOME/bin:$HOME/.local/bin:/usr/local/bin
+
 #! Не меня порядок следующих 4х строк !#
-export ZSH=~/.oh-my-zsh
 ZSH_THEME="powerlevel10k/powerlevel10k"
 plugins=(z git zsh-autosuggestions zsh-syntax-highlighting fzf fzf-tab)
+export ZSH=~/.oh-my-zsh
 source $ZSH/oh-my-zsh.sh
+#!###################################!#
+
 # source /etc/profile.d/completion.zsh
 # source /etc/profile.d/key-bindings.zsh
 #!####################################!#

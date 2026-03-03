@@ -5,30 +5,36 @@
 
 ## Prompt at terminal start: choose tmux or plain zsh
 prompt_tmux_or_zsh() {
-  [[ -o interactive ]] || return
-  [[ -t 1 ]] || return
-  command -v tmux >/dev/null 2>&1 || return
+    [[ -o interactive ]] || return
+    [[ -t 1 ]] || return
+    [[ -n "$PS1" ]] && [[ -z "$TMUX" ]] || return
+    command -v tmux >/dev/null 2>&1 || return
 
-  local selection raw
-  if command -v fzf >/dev/null 2>&1; then
-    raw=$(printf "%b\t%s\n%b\t%s" $'\e[1;38;2;80;250;123m''tmux'$'\e[0m' tmux $'\e[1;38;2;80;250;123m''zsh'$'\e[0m' zsh \
-      | fzf --ansi --no-input --height=40% --margin=40%,20% --border --no-info --pointer='▶' --reverse --with-nth=1 --bind 'change:ignore' --bind 'ctrl-c:abort' --no-multi)
-    selection=$(printf "%s" "$raw" | awk -F"\t" '{print $2}')
-  else
-    tmux new-session -A && exit
-  fi
+    # colors
+    COLOR=$'\e[1;38;2;80;250;123m'   # #50fa7b (bold)
 
-  case "$selection" in
-    tmux)
-      tmux new-session -A && exit
-      ;;
-    zsh)
-      return
-      ;;
-    *)
-      return
-      ;;
-  esac
+    # fzf options kept the same as before
+    fzf_opts=(--ansi --no-input --height=40% --margin=40%,20% --border --no-info \
+                --pointer='▶' --reverse --with-nth=1 --bind 'change:ignore' \
+                --bind 'ctrl-c:abort' --no-multi)
+
+
+    local selection raw
+    if command -v fzf >/dev/null 2>&1; then
+        raw=$(printf "%b\t%s\n%b\t%s" \
+                "$COLOR"'tmux' tmux \
+                "$COLOR"'zsh' zsh \
+                |fzf "${fzf_opts[@]}"\
+        )
+        selection=$(printf "%s" "$raw" | cut -f2)
+    else
+        tmux new-session -A && exit
+    fi
+
+    case "$selection" in
+        tmux)  tmux new-session -A ;;  # or tmux attach
+        zsh)   ;;                      # continue in shell
+    esac
 }
 
 # Invoke prompt for interactive shells

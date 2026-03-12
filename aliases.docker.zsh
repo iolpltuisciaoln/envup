@@ -5,18 +5,18 @@
 function dps() {
     # Docker ps
     #
-    docker ps --format "{{.Names}};({{.Image}});{{.Status}};{{.Ports}}" | sort -r | column -t -s ";" | fzf +s --preview-window hidden
+    docker ps --format "{{.Names}};({{.Image}});{{.Status}};{{.Ports}}" | sort -r | column -t -s ";" | fzf +s --exact --preview-window hidden
 }
 
 function dpsa() {
-    docker ps -a --format "{{.Names}};({{.Image}});{{.Status}};{{.Ports}}"|sort -r|column -t -s ";" |fzf +s --preview-window hidden
+    docker ps -a --format "{{.Names}};({{.Image}});{{.Status}};{{.Ports}}"|sort -r|column -t -s ";" |fzf +s --exact --preview-window hidden
     }
 
 function dsu() {
     # Shell into docker container
     #
     local cid
-    cid=$(docker ps --format "{{.Names}};({{.Image}});{{.Ports}}" | sort | column -t -s ";" | fzf +s --preview-window hidden)
+    cid=$(docker ps --format "{{.Names}};({{.Image}});{{.Ports}}" | sort | column -t -s ";" | fzf +s --exact --preview-window hidden)
     cid=$(echo $cid | awk '{print $1}')
     [ -n "$cid" ] && docker start "$cid" && docker exec -it "$cid" su
 }
@@ -25,7 +25,7 @@ function dsua() {
     # Shell into docker container, start if not started
     #
     local cid
-    cid=$(docker ps -a --format "{{.Names}};({{.Image}});{{.Ports}}" | sort | column -t -s ";" | fzf +s --preview-window hidden)
+    cid=$(docker ps -a --format "{{.Names}};({{.Image}});{{.Ports}}" | sort | column -t -s ";" | fzf +s --exact --preview-window hidden)
     cid=$(echo $cid | awk '{print $1}')
     [ -n "$cid" ] && docker start "$cid" && docker exec -it "$cid" su
 }
@@ -34,7 +34,7 @@ function ds() {
     # Stahp Docker container
     #
     local cid
-    cid=$(docker ps -a --format "{{.Names}};({{.Image}});{{.Ports}}" | sort | column -t -s ";" | fzf +s --preview-window hidden)
+    cid=$(docker ps -a --format "{{.Names}};({{.Image}});{{.Ports}}" | sort | column -t -s ";" | fzf +s --exact --preview-window hidden)
     cid=$(echo $cid | awk '{print $1}')
     [ -n "$cid" ] && docker stop "$cid"
 }
@@ -50,14 +50,14 @@ function drm() {
     # Delete Docker container
     #
     local cid
-    cid=$(docker ps -a | sed 1d | fzf --preview-window hidden -q "$1" | awk '{print $1}')
+    cid=$(docker ps -a | sed 1d | fzf --exact --preview-window hidden -q "$1" | awk '{print $1}')
     [ -n "$cid" ] && docker rm "$cid"
 }
 
 function drmi() {
     # Delete Docker image
     #
-    docker images | sed 1d | fzf -q "$1" --no-sort -m --tac --preview-window hidden | awk '{ print $3 }' | xargs -r docker rmi
+    docker images | sed 1d | fzf --exact -q "$1" --no-sort -m --tac --preview-window hidden | awk '{ print $3 }' | xargs -r docker rmi
 }
 
 function dip {

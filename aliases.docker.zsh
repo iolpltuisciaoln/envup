@@ -57,7 +57,7 @@ function drm() {
 function drmi() {
     # Delete Docker image
     #
-    docker images | sed 1d | fzf --exact -q "$1" --no-sort -m --tac --preview-window hidden | awk '{ print $3 }' | xargs -r docker rmi
+    docker images -a| sed 1d | fzf --exact -q "$1" --no-sort -m --tac --preview-window hidden | awk '{ print $3 }' | xargs -r docker rmi
 }
 
 function dip {

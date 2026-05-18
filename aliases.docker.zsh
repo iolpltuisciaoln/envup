@@ -81,7 +81,7 @@ function dl-fn {
 }
 
 alias dl=dl-fn
-alias dcu="docker-compose up"
-alias dcud="docker-compose up -d"
-alias dcd="docker-compose down"
-alias dcr="docker-compose restart"
+alias dcu="docker compose up"
+alias dcud="docker compose up -d"
+alias dcd="docker compose down"
+alias dcr="docker compose restart"

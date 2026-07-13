@@ -45,6 +45,8 @@ if [ -f $batcat ]; then
     sudo ln -s $batcat $more
 fi
 
+mkdir ~/.tmux
+
 curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/zshrc >~/.zshrc
 curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/zshenv >~/.zshenv
 curl https://raw.githubusercontent.com/iolpltuisciaoln/envup/master/net_stat.sh >~/.tmux/net_stat.sh

@@ -1,4 +1,5 @@
 alias more='batcat'
+alias cat='batcat -p'
 alias ee='mcedit'
 # alias mc='. /usr/libexec/mc/mc-wrapper.sh'
 alias -g G='| grep -i'

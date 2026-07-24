@@ -1,7 +1,7 @@
 alias more='batcat'
 alias cat='batcat -p'
 alias ee='mcedit'
-# alias mc='. /usr/libexec/mc/mc-wrapper.sh'
+alias mc='mc -ub'
 alias -g G='| grep -i'
 alias -g F='| fzf --tail 100000 --tac --no-sort --exact --wrap '
 alias jf='journalctl -n1000 -f|fzf --tail 100000 --tac --no-sort --exact --wrap '

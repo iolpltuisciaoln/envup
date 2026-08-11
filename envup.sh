@@ -66,9 +66,9 @@ sudo mkdir -p /usr/local/fonts/JetBrainsMono
 sudo mkdir -p /usr/local/fonts/FiraMono
 sudo mkdir -p /usr/local/fonts/DroidSansMono
 
-sudo curl -s -L https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.tar.xz | tar xvJ -C /usr/local/fonts/JetBrainsMono/
-sudo curl -s -L https://github.com/ryanoasis/nerd-fonts/releases/latest/download/FiraMono.tar.xz | tar xvJ -C /usr/local/fonts/FiraMono/
-sudo curl -s -L https://github.com/ryanoasis/nerd-fonts/releases/latest/download/DroidSansMono.tar.xz | tar xvJ -C /usr/local/fonts/DroidSansMono/
+curl -s -L https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.tar.xz | sudo tar xvJ -C /usr/local/fonts/JetBrainsMono/
+curl -s -L https://github.com/ryanoasis/nerd-fonts/releases/latest/download/FiraMono.tar.xz | sudo tar xvJ -C /usr/local/fonts/FiraMono/
+curl -s -L https://github.com/ryanoasis/nerd-fonts/releases/latest/download/DroidSansMono.tar.xz | sudo tar xvJ -C /usr/local/fonts/DroidSansMono/
 
 sudo chown -R root: /usr/local/fonts
 sudo chmod -R 755 /usr/local/fonts

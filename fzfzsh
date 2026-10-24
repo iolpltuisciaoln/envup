@@ -26,24 +26,193 @@ fzf-redraw-prompt() {
 }
 zle -N fzf-redraw-prompt
 
-accept-line() {
-    if [[ -z $BUFFER ]]; then
-        zle -I
-        l
+# accept-line() {
+#     if [[ -z $BUFFER ]]; then
+#         zle -I
+#         l
+#     else
+#         zle ".$WIDGET"
+#     fi
+# }
+
+# zle -N accept-line
+
+
+
+
+function rgfzf() {
+    local QF QR QM
+    QF="$(mktemp "${TMPDIR:-/tmp}/rgfzf.qf.XXXXXX")" || return 1
+    QR="$(mktemp "${TMPDIR:-/tmp}/rgfzf.qr.XXXXXX")" || { rm -f "$QF"; return 1; }
+    QM="$(mktemp "${TMPDIR:-/tmp}/rgfzf.qm.XXXXXX")" || { rm -f "$QF" "$QR"; return 1; }
+    trap 'rm -f -- "$QF" "$QR" "$QM"' EXIT INT TERM HUP
+  print -r -- f > "$QM"
+
+  local INITIAL_QUERY="${*:-}"
+  local ret
+
+  # Base commands (keep them simple; no nested quoting)
+  local FD_CMD='fdfind --type f --hidden --follow --exclude .git .'
+  local RG_CMD='rg --column --line-number --no-heading --color=always --smart-case'
+
+  ret="$(
+    eval "$FD_CMD" | fzf --listen=/tmp/fzf.sock --ansi -x \
+      --query "$INITIAL_QUERY" \
+      --prompt 'files> ' \
+      --header '╱ CTRL-F (files mode) ╱ CTRL-R (ripgrep mode) ╱' \
+      --color "hl:-1:underline,hl+:-1:underline:reverse" \
+      --delimiter : \
+      --preview '[[ "{1}" == *:*:* ]] && bat -A --color=always {1} --highlight-line {2} || bat -A --color=always --style=numbers --line-range :200 {1} 2>/dev/null || sed -n "1,200p" {1}' \
+      --preview-window 'up,60%,border-bottom,+{2}+3/3,~3' \
+      \
+      --bind "start:unbind(change)" \
+      --bind "change:reload(sh -c 'fq=\$(cat \"$QF\" 2>/dev/null); if [ -n \"\$fq\" ]; then fd --type f --hidden --follow --exclude .git -g \"*\$fq*\" -0 . | xargs -0 $RG_CMD -- \"\$1\"; else $RG_CMD -- \"\$1\"; fi' _ {q} || true)" \
+      \
+      --bind "ctrl-r:transform:sh -c 'm=\$(cat \"$QM\" 2>/dev/null); if [ \"\$m\" = r ]; then echo ignore; else echo \"execute-silent(echo {q} > $QF; echo r > $QM)+transform-query(cat $QR 2>/dev/null)+change-prompt(ripgrep> )+disable-search+rebind(change)+reload(sh -c \\\"fq=\\\\\\\$(cat $QF 2>/dev/null); if [ -n \\\\\\\"\\\\\\\$fq\\\\\\\" ]; then fd --type f --hidden --follow --exclude .git -g \\\\\\\"*\\\\\\\$fq*\\\\\\\" -0 . | xargs -0 $RG_CMD -- \\\\\\\"\\\\\\\$1\\\\\\\"; else $RG_CMD -- \\\\\\\"\\\\\\\$1\\\\\\\"; fi\\\" _ {q} || true)\"; fi'" \
+      \
+      --bind "ctrl-f:transform:sh -c 'm=\$(cat \"$QM\" 2>/dev/null); if [ \"\$m\" = f ]; then echo ignore; else echo \"execute-silent(echo {q} > $QR; echo f > $QM)+transform-query(cat $QF 2>/dev/null)+change-prompt(files> )+enable-search+unbind(change)+reload(fd --type f --hidden --follow --exclude .git .)\"; fi'" \
+      \
+      --bind 'enter:become(if [[ "{1}" == *:*:* ]]; then echo {1} | cut -d: -f1; else echo {1}; fi)'
+  )"
+
+  [[ -n "$ret" ]] && LBUFFER+="${(q)ret}"
+}
+
+
+
+function rgfzf_fail() {
+  local QF QR QM
+  QF="$(mktemp "${TMPDIR:-/tmp}/rgfzf.qf.XXXXXX")" || return 1
+  QR="$(mktemp "${TMPDIR:-/tmp}/rgfzf.qr.XXXXXX")" || { rm -f "$QF"; return 1; }
+  QM="$(mktemp "${TMPDIR:-/tmp}/rgfzf.qm.XXXXXX")" || { rm -f "$QF" "$QR"; return 1; }
+  trap 'rm -f -- "$QF" "$QR" "$QM"' EXIT INT TERM HUP
+
+  print -r -- f > "$QM"
+
+  local INITIAL_QUERY="${*:-}"
+  local ret
+
+  local FD_CMD='fd --type f --hidden --follow --exclude .git .'
+  local RG_CMD='rg --column --line-number --no-heading --color=always --smart-case'
+
+  ret="$(
+    eval "$FD_CMD" | fzf --ansi \
+      --query "$INITIAL_QUERY" \
+      --prompt 'files> ' \
+      --header '╱ CTRL-F (files mode) ╱ CTRL-R (ripgrep mode) ╱' \
+      --color "hl:-1:underline,hl+:-1:underline:reverse" \
+      --delimiter : \
+      --preview '[[ "{1}" == *:*:* ]] && bat --color=always {1} --highlight-line {2} || bat --color=always --style=numbers --line-range :200 {1} 2>/dev/null || sed -n "1,200p" {1}' \
+      --preview-window 'up,60%,border-bottom,+{2}+3/3,~3' \
+      --bind "start:unbind(change)" \
+      --bind "change:reload(sh -c 'fq=\$(cat \"$QF\" 2>/dev/null); if [ -n \"\$fq\" ]; then fd --type f --hidden --follow --exclude .git -g \"*\$fq*\" -0 . | xargs -0 $RG_CMD -- \"\$1\"; else $RG_CMD -- \"\$1\"; fi' _ {q} || true)" \
+      --bind "f2:execute-silent(sh -c 'printf \"%s\" \"\$1\" > \"\$2\"; printf r > \"\$3\"' _ {q} \"$QF\" \"$QM\")+transform-query(cat \"$QR\" 2>/dev/null)+change-prompt(ripgrep> )+disable-search+rebind(change)+reload(sh -c 'fq=\$(cat \"$QF\" 2>/dev/null); if [ -n \"\$fq\" ]; then fd --type f --hidden --follow --exclude .git -g \"*\$fq*\" -0 . | xargs -0 $RG_CMD -- \"\$1\"; else $RG_CMD -- \"\$1\"; fi' _ {q} || true)" \
+      --bind "f3:execute-silent(sh -c 'printf \"%s\" \"\$1\" > \"\$2\"; printf f > \"\$3\"' _ {q} \"$QR\" \"$QM\")+transform-query(cat \"$QF\" 2>/dev/null)+change-prompt(files> )+enable-search+unbind(change)+reload($FD_CMD)" \
+      --bind "ctrl-r:transform:sh -c 'm=\$(cat \"$QM\" 2>/dev/null); [ \"\$m\" = r ] && echo ignore || echo trigger(f2)'" \
+      --bind "ctrl-f:transform:sh -c 'm=\$(cat \"$QM\" 2>/dev/null); [ \"\$m\" = f ] && echo ignore || echo trigger(f3)'" \
+      --bind 'enter:become(if [[ "{1}" == *:*:* ]]; then echo {1} | cut -d: -f1; else echo {1}; fi)'
+  )"
+
+  [[ -n "$ret" ]] && LBUFFER+="${(q)ret}"
+}
+
+
+
+function rgfzf1() {
+    local QF QR QM
+    QF="$(mktemp "${TMPDIR:-/tmp}/rgfzf.qf.XXXXXX")" || return 1
+    QR="$(mktemp "${TMPDIR:-/tmp}/rgfzf.qr.XXXXXX")" || { rm -f "$QF"; return 1; }
+    QM="$(mktemp "${TMPDIR:-/tmp}/rgfzf.qm.XXXXXX")" || { rm -f "$QF" "$QR"; return 1; }
+    trap 'rm -f -- "$QF" "$QR" "$QM"' EXIT INT TERM HUP
+  print -r -- f > "$QM"
+
+  local INITIAL_QUERY="${*:-}"
+  local ret
+
+  # Base commands (keep them simple; no nested quoting)
+  local FD_CMD='fd --type f --hidden --follow --exclude .git .'
+  local RG_CMD='rg --column --line-number --no-heading --color=always --smart-case'
+
+  ret="$(
+    eval "$FD_CMD" | fzf --listen=/tmp/fzf.sock --ansi \
+      --query "$INITIAL_QUERY" \
+      --prompt 'files> ' \
+      --header '╱ CTRL-F (files mode) ╱ CTRL-R (ripgrep mode) ╱' \
+      --color "hl:-1:underline,hl+:-1:underline:reverse" \
+      --delimiter : \
+      --preview '[[ "{1}" == *:*:* ]] && bat --color=always {1} --highlight-line {2} || bat --color=always --style=numbers --line-range :200 {1} 2>/dev/null || sed -n "1,200p" {1}' \
+      --preview-window 'up,60%,border-bottom,+{2}+3/3,~3' \
+      \
+      --bind "start:unbind(change)" \
+      --bind "change:reload(sh -c 'fq=\$(cat \"$QF\" 2>/dev/null); if [ -n \"\$fq\" ]; then fd --type f --hidden --follow --exclude .git -g \"*\$fq*\" -0 . | xargs -0 -P 1 rg --column --line-number --no-heading --color=always --smart-case -- \"\$1\"; else rg --column --line-number --no-heading --color=always --smart-case -- \"\$1\"; fi' _ {q} || true)" \
+      \
+      --bind "ctrl-r:transform:sh -c 'm=\$(cat \"$QM\" 2>/dev/null); if [ \"\$m\" = r ]; then echo ignore; else echo \"execute-silent(echo {q} > $QF; echo r > $QM)+transform-query(cat $QR 2>/dev/null)+change-prompt(ripgrep> )+disable-search+rebind(change)+reload(sh -c \\\"fq=\\\\\\\$(cat $QF 2>/dev/null); if [ -n \\\\\\\"\\\\\\\$fq\\\\\\\" ]; then fd --type f --hidden --follow --exclude .git -g \\\\\\\"*\\\\\\\$fq*\\\\\\\" -0 . | xargs -0 -P 1 rg --column --line-number --no-heading --color=always --smart-case -- \\\\\\\"\\\\\\\$1\\\\\\\"; else rg --column --line-number --no-heading --color=always --smart-case -- \\\\\\\"\\\\\\\$1\\\\\\\"; fi\\\" _ {q} || true)\"; fi'" \
+      \
+      --bind "ctrl-f:transform:sh -c 'm=\$(cat \"$QM\" 2>/dev/null); if [ \"\$m\" = f ]; then echo ignore; else echo \"execute-silent(echo {q} > $QR; echo f > $QM)+transform-query(cat $QF 2>/dev/null)+change-prompt(files> )+enable-search+unbind(change)+reload(fd --type f --hidden --follow --exclude .git .)\"; fi'" \
+      \
+      --bind 'enter:become(if [[ "{1}" == *:*:* ]]; then echo {1} | cut -d: -f1; else echo {1}; fi)'
+  )"
+
+  [[ -n "$ret" ]] && LBUFFER+="${(q)ret}"
+}
+
+
+
+function rgfzf0() {
+    local QF QR QM
+    QF="$(mktemp "${TMPDIR:-/tmp}/rgfzf.qf.XXXXXX")" || return 1
+    QR="$(mktemp "${TMPDIR:-/tmp}/rgfzf.qr.XXXXXX")" || { rm -f "$QF"; return 1; }
+    QM="$(mktemp "${TMPDIR:-/tmp}/rgfzf.qm.XXXXXX")" || { rm -f "$QF" "$QR"; return 1; }
+    trap 'rm -f -- "$QF" "$QR" "$QM"' EXIT INT TERM HUP
+    print -r -- f > "$QM"
+
+    local INITIAL_QUERY="${*:-}"
+    local ret
+
+    # Base commands (keep them simple; no nested quoting)
+    local FD_CMD='fd --type f --hidden --follow --exclude .git .'
+    local RG_CMD='rg --column --line-number --no-heading --color=always --smart-case'
+
+    ret="$(
+    eval "$FD_CMD" | fzf --ansi \
+        --query "$INITIAL_QUERY" \
+        --prompt 'files> ' \
+        --header '╱ CTRL-F (files mode) ╱ CTRL-R (ripgrep mode) ╱' \
+        --color "hl:-1:underline,hl+:-1:underline:reverse" \
+        --delimiter : \
+        --preview '[[ "{1}" == *:*:* ]] && bat --color=always {1} --highlight-line {2} || bat --color=always --style=numbers --line-range :200 {1} 2>/dev/null || sed -n "1,200p" {1}' \
+        --preview-window 'up,60%,border-bottom,+{2}+3/3,~3' \
+        \
+        --bind "start:unbind(change)" \
+        --bind "change:reload(sh -c 'fq=\$(cat \"$QF\" 2>/dev/null); if [ -n \"\$fq\" ]; then fd --type f --hidden --follow --exclude .git -g \"*\$fq*\" -0 . | xargs -0 rg --column --line-number --no-heading --color=always --smart-case -- \"\$1\"; else rg --column --line-number --no-heading --color=always --smart-case -- \"\$1\"; fi' _ {q} || true)" \
+        \
+        --bind "ctrl-r:transform:sh -c 'm=\$(cat \"$QM\" 2>/dev/null); if [ \"\$m\" = r ]; then echo ignore; else echo \"execute-silent(echo {q} > $QF; echo r > $QM)+transform-query(cat $QR 2>/dev/null)+change-prompt(ripgrep> )+disable-search+rebind(change)+reload(sh -c \\\"fq=\\\\\\\$(cat $QF 2>/dev/null); if [ -n \\\\\\\"\\\\\\\$fq\\\\\\\" ]; then fd --type f --hidden --follow --exclude .git -g \\\\\\\"*\\\\\\\$fq*\\\\\\\" -0 . | xargs -0 rg --column --line-number --no-heading --color=always --smart-case -- \\\\\\\"\\\\\\\$1\\\\\\\"; else rg --column --line-number --no-heading --color=always --smart-case -- \\\\\\\"\\\\\\\$1\\\\\\\"; fi\\\" _ {q} || true)\"; fi'" \
+        \
+        --bind "ctrl-f:transform:sh -c 'm=\$(cat \"$QM\" 2>/dev/null); if [ \"\$m\" = f ]; then echo ignore; else echo \"execute-silent(echo {q} > $QR; echo f > $QM)+transform-query(cat $QF 2>/dev/null)+change-prompt(files> )+enable-search+unbind(change)+reload(fd --type f --hidden --follow --exclude .git .)\"; fi'" \
+        \
+        --bind 'enter:become(if [[ "{1}" == *:*:* ]]; then echo {1} | cut -d: -f1; else echo {1}; fi)'
+    )"
+
+    [[ -n "$ret" ]] && LBUFFER+="${(q)ret}"
+}
+
+
+
+function dnf() {
+    if [ "$#" -gt 0 ]; then
+        `which dnf` "$@"
     else
-        zle ".$WIDGET"
+        ~/.dnf.fzf
     fi
 }
 
-zle -N accept-line
-
 function man() {
     if [ "$#" -gt 0 ]; then
-        /bin/man $1 | col -bx | batcat --language=man --plain --color always --theme="Monokai Extended"
+        /bin/man $1 | col -bx | bat --language=man --plain --color always --theme="Monokai Extended"
         return
     fi
 
-    batman="/bin/man {1} | col -bx | batcat --language=man --plain --color always --theme=\"Monokai Extended\""
+    batman="/bin/man {1} | col -bx | bat --language=man --plain --color always --theme=\"Monokai Extended\""
     /bin/man -k . | sort \
         | awk -v cyan=$(tput setaf 6) -v blue=$(tput setaf 4) -v res=$(tput sgr0) -v bld=$(tput bold) '{ $1=cyan bld $1; $2=res blue;} 1' \
         | fzf  \
@@ -57,16 +226,7 @@ function man() {
     zle reset-prompt
 }
 
-function dnf() {
-    if [ "$#" -gt 0 ]; then
-        `which dnf` "$@"
-    else
-        ~/.dnf.fzf
-    fi
-}
-
-
-# FF browse history
+# FF
 
 h() {
     local cols sep google_history open
@@ -92,28 +252,31 @@ h() {
         xargs $open >/dev/null 2>/dev/null
 }
 
-# #
-# # Google Chrome
-# # c - browse chrome history
-# h() {
-#     local cols sep google_history open
-#     cols=$((COLUMNS / 3))
-#     sep='{::}'
 
-#     if [ "$(uname)" = "Darwin" ]; then
-#         google_history="$HOME/Library/Application Support/Google/Chrome/Default/History"
-#         open=open
-#     else
-#         google_history="$HOME/.config/google-chrome/Default/History"
-#         open=xdg-open
-#     fi
-#     cp -f "$google_history" /tmp/h
-#     sqlite3 -separator $sep /tmp/h \
-#         "select substr(title, 1, $cols), url
-#   from urls order by last_visit_time desc" |
-#         awk -F $sep '{printf "%-'$cols's  \x1b[36m%s\x1b[m\n", $1, $2}' |
-#         fzf --ansi --multi | sed 's#.*\(https*://\)#\1#' | xargs $open >/dev/null 2>/dev/null
-# }
+#
+# Google Chrome
+# c - browse chrome history
+
+
+h2() {
+    local cols sep google_history open
+    cols=$((COLUMNS / 3))
+    sep='{::}'
+
+    if [ "$(uname)" = "Darwin" ]; then
+        google_history="$HOME/Library/Application Support/Google/Chrome/Default/History"
+        open=open
+    else
+        google_history="$HOME/.config/google-chrome/Default/History"
+        open=xdg-open
+    fi
+    cp -f "$google_history" /tmp/h
+    sqlite3 -separator $sep /tmp/h \
+        "select substr(title, 1, $cols), url
+  from urls order by last_visit_time desc" |
+        awk -F $sep '{printf "%-'$cols's  \x1b[36m%s\x1b[m\n", $1, $2}' |
+        fzf --ansi --multi | sed 's#.*\(https*://\)#\1#' | xargs $open >/dev/null 2>/dev/null
+}
 
 # b - browse chrome bookmarks
 b() {
@@ -152,58 +315,10 @@ jump() {
     fi
 }
 
-function rgfzf() {
-  local QF QR QM
-  QF="$(mktemp "${TMPDIR:-/tmp}/rgfzf.qf.XXXXXX")" || return 1
-  QR="$(mktemp "${TMPDIR:-/tmp}/rgfzf.qr.XXXXXX")" || { rm -f "$QF"; return 1; }
-  QM="$(mktemp "${TMPDIR:-/tmp}/rgfzf.qm.XXXXXX")" || { rm -f "$QF" "$QR"; return 1; }
-  trap 'rm -f -- "$QF" "$QR" "$QM"' EXIT INT TERM HUP
-
-  print -r -- f > "$QM"
-
-  local INITIAL_QUERY="${*:-}"
-  local ret
-
-  # Base commands (kept simple)
-  local FD_CMD='fd --type f --hidden --follow --exclude .git .'
-  local RG_CMD='rg --column --line-number --no-heading --color=always --smart-case'
-
-  ret="$(
-    eval "$FD_CMD" | fzf --ansi \
-      --query "$INITIAL_QUERY" \
-      --prompt 'files> ' \
-      --header '╱ CTRL-F (files mode) ╱ CTRL-R (ripgrep mode) ╱' \
-      --color "hl:-1:underline,hl+:-1:underline:reverse" \
-      --delimiter : \
-      --preview '[[ "{1}" == *:*:* ]] && bat --color=always {1} --highlight-line {2} || bat --color=always --style=numbers --line-range :200 {1} 2>/dev/null || sed -n "1,200p" {1}' \
-      --preview-window 'up,60%,border-bottom,+{2}+3/3,~3' \
-      \
-      --bind "start:unbind(change)" \
-      \
-      --bind "change:reload(sh -c 'fq=\$(cat \"$QF\" 2>/dev/null); if [ -n \"\$fq\" ]; then fd --type f --hidden --follow --exclude .git -g \"*\$fq*\" -0 . | xargs -0 $RG_CMD -- \"\$1\"; else $RG_CMD -- \"\$1\"; fi' _ {q} || true)" \
-      \
-      --bind "ctrl-r:transform:sh -c '
-        m=\$(cat \"$QM\" 2>/dev/null)
-        if [ \"\$m\" = r ]; then
-          echo ignore
-        else
-          # Save current file-mode query safely (handles single quotes etc.), flip mode, restore rg query
-          echo \"execute-silent(sh -c \\\"printf %s \\\\\\\"\\\\\\\$1\\\\\\\" > \\\\\\\"\\\\\\\$2\\\\\\\"\\\" _ {q} $QF; printf r > $QM)+transform-query(cat $QR 2>/dev/null)+change-prompt(ripgrep> )+disable-search+rebind(change)+reload(sh -c \\\\\\\"fq=\\\\\\\\\\\\\\\$(cat $QF 2>/dev/null); if [ -n \\\\\\\\\\\\\\\"\\\\\\\\\\\\\\\$fq\\\\\\\\\\\\\\\" ]; then fd --type f --hidden --follow --exclude .git -g \\\\\\\\\\\\\\\"*\\\\\\\\\\\\\\\$fq*\\\\\\\\\\\\\\\" -0 . | xargs -0 $RG_CMD -- \\\\\\\\\\\\\\\"\\\\\\\\\\\\\\\$1\\\\\\\\\\\\\\\"; else $RG_CMD -- \\\\\\\\\\\\\\\"\\\\\\\\\\\\\\\$1\\\\\\\\\\\\\\\"; fi\\\\\\\" _ {q} || true)\"
-        fi
-      '" \
-      \
-      --bind "ctrl-f:transform:sh -c '
-        m=\$(cat \"$QM\" 2>/dev/null)
-        if [ \"\$m\" = f ]; then
-          echo ignore
-        else
-          # Save current rg-mode query safely, flip mode, restore file query
-          echo \"execute-silent(sh -c \\\"printf %s \\\\\\\"\\\\\\\$1\\\\\\\" > \\\\\\\"\\\\\\\$2\\\\\\\"\\\" _ {q} $QR; printf f > $QM)+transform-query(cat $QF 2>/dev/null)+change-prompt(files> )+enable-search+unbind(change)+reload($FD_CMD)\"
-        fi
-      '" \
-      \
-      --bind 'enter:become(if [[ "{1}" == *:*:* ]]; then echo {1} | cut -d: -f1; else echo {1}; fi)'
-  )"
-
-  [[ -n "$ret" ]] && LBUFFER+="${(q)ret}"
+lf() {
+  [ -r "$1" ] || { echo "usage: lf <logfile> [extra fzf args]" >&2; return 1; }
+  local file=$1; shift
+  tail -n 100000 -F "$file" \
+    | fzf --algo=v1 --tail 100000 --tac --no-sort --exact \
+          --preview 'echo {}' --preview-window=down:4:wrap "$@"
 }

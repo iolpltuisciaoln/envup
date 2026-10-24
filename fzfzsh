@@ -315,7 +315,7 @@ jump() {
     fi
 }
 
-lf() {
+fzl() {
   [ -r "$1" ] || { echo "usage: lf <logfile> [extra fzf args]" >&2; return 1; }
   local file=$1; shift
   tail -n 100000 -F "$file" \

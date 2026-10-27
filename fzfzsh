@@ -320,5 +320,6 @@ fzl() {
   local file=$1; shift
   tail -n 100000 -F "$file" \
     | fzf --algo=v1 --tail 100000 --tac --no-sort --exact \
+          --bind 'ctrl-p:toggle-track' \
           --preview 'echo {}' --preview-window=down:4:wrap "$@"
 }
